@@ -1,0 +1,3242 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>R. Naomi AI — Chat AI, Video 30s &amp; Naomi Engine 5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Marked.js untuk format Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'float': 'floatSlow 10s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(8px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        floatSlow: {
+                            '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '50%': { transform: 'translate(14px, -18px) scale(1.04)' }
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        /* Reset & Base Layout Anti-Blank Screen */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #070a12;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar Halus */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.25);
+            border-radius: 9999px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Glassmorphism Surfaces */
+        .glass-header {
+            background: rgba(11, 16, 28, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        }
+        .glass-card {
+            background: rgba(21, 29, 46, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+        }
+        .glass-bubble-ai {
+            background: rgba(23, 32, 50, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Markdown Content Styling */
+        .markdown-body p {
+            margin-bottom: 0.65rem;
+            line-height: 1.65;
+        }
+        .markdown-body p:last-child {
+            margin-bottom: 0;
+        }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+            font-weight: 700;
+            color: #ffffff;
+            margin-top: 0.9rem;
+            margin-bottom: 0.35rem;
+        }
+        .markdown-body h1 { font-size: 1.15rem; }
+        .markdown-body h2 { font-size: 1.05rem; }
+        .markdown-body h3 { font-size: 0.96rem; }
+        .markdown-body ul {
+            list-style-type: disc;
+            padding-left: 1.25rem;
+            margin-bottom: 0.65rem;
+        }
+        .markdown-body ol {
+            list-style-type: decimal;
+            padding-left: 1.25rem;
+            margin-bottom: 0.65rem;
+        }
+        .markdown-body li {
+            margin-bottom: 0.25rem;
+            line-height: 1.55;
+        }
+        .markdown-body strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .markdown-body blockquote {
+            border-left: 3px solid #8b5cf6;
+            padding: 0.3rem 0.75rem;
+            margin: 0.6rem 0;
+            background: rgba(139, 92, 246, 0.12);
+            border-radius: 0 0.5rem 0.5rem 0;
+            color: #cbd5e1;
+        }
+        .markdown-body code:not(pre code) {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(139, 92, 246, 0.22);
+            color: #ddd6fe;
+            padding: 0.12rem 0.35rem;
+            border-radius: 0.35rem;
+            font-size: 0.84em;
+        }
+        .code-block-wrapper {
+            margin: 0.7rem 0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #060910;
+        }
+        .code-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.4rem 0.75rem;
+            background: rgba(30, 41, 59, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: #94a3b8;
+        }
+        .markdown-body pre {
+            margin: 0;
+            padding: 0.85rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.7rem 0;
+            font-size: 0.82rem;
+            display: block;
+            overflow-x: auto;
+        }
+        .markdown-body th, .markdown-body td {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.45rem 0.65rem;
+            text-align: left;
+        }
+        .markdown-body th {
+            background: rgba(139, 92, 246, 0.22);
+            color: #ffffff;
+        }
+
+        /* Dots Loading Animation */
+        .thinking-dot {
+            animation: thinkingBounce 1.4s infinite ease-in-out both;
+        }
+        .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
+        .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes thinkingBounce {
+            0%, 80%, 100% { transform: scale(0.45); opacity: 0.35; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Godot Engine 4 Dark IDE Palette untuk Naomi Engine 5 */
+        .godot-deep { background-color: #14181d; }
+        .godot-panel { background-color: #1d2229; }
+        .godot-bar { background-color: #252b34; }
+        .godot-border { border-color: #323a46; }
+        .godot-tab-active {
+            background-color: rgba(71, 140, 191, 0.26);
+            border-color: #478cbf;
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body class="bg-[#070a12] text-slate-100 font-sans antialiased selection:bg-violet-500/35 selection:text-white">
+
+    <!-- Efek Cahaya Ambient Latar -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-24 -left-20 w-64 h-64 sm:w-96 sm:h-96 bg-violet-600/20 rounded-full filter blur-3xl animate-float"></div>
+        <div class="absolute bottom-6 -right-20 w-64 h-64 sm:w-96 sm:h-96 bg-cyan-500/15 rounded-full filter blur-3xl animate-float" style="animation-delay: 3s;"></div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- CONTAINER UTAMA: 100dvh FLEX COLUMN (ANTI LAYAR KOSONG)                  -->
+    <!-- ========================================================================= -->
+    <div id="app-shell" style="display: flex; flex-direction: column; height: 100dvh; width: 100%; max-width: 100vw; overflow: hidden;" class="relative z-10">
+
+        <!-- ===================================================================== -->
+        <!-- HEADER ATAS KOMPAK (MUAT SEMPURNA DI LAYAR HP 360px TANPA TERPOTONG)   -->
+        <!-- ===================================================================== -->
+        <header class="glass-header px-2.5 py-2 sm:px-5 sm:py-2.5 shrink-0 z-30">
+            <div class="max-w-6xl mx-auto space-y-2">
+                <!-- BARIS 1: Logo RN + Judul & Jam Real-Time + Tombol 3 Mode Utama -->
+                <div class="flex items-center justify-between gap-1.5 min-w-0">
+                    <!-- Kiri: Brand RN + Title + Live Clock + Status Web Dot -->
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-cyan-500 flex items-center justify-center shadow-md shrink-0">
+                            <span class="font-extrabold text-xs sm:text-sm text-white tracking-tight">RN</span>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5">
+                                <h1 class="font-bold text-[13px] sm:text-base text-white tracking-tight whitespace-nowrap">R. Naomi AI</h1>
+                                <span id="header-web-badge" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-[9px] sm:text-[10px] font-bold text-emerald-300 shrink-0">
+                                    <span id="header-web-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>Web</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[10px] sm:text-xs font-mono text-cyan-300/95 truncate">
+                                <span id="live-clock" class="whitespace-nowrap">Memuat...</span>
+                                <span class="text-slate-600">•</span>
+                                <span id="live-date" class="text-slate-400 truncate">Hari ini</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kanan: 3 Tombol Navigasi Mode Utama (Single-line, anti-wrap) -->
+                    <nav class="flex items-center gap-1 bg-slate-900/95 p-1 rounded-xl border border-white/10 shrink-0">
+                        <button type="button" onclick="switchMode('chat')" id="tab-mode-chat" class="px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold bg-violet-600 text-white shadow-sm whitespace-nowrap transition">
+                            💬 Chat AI
+                        </button>
+                        <button type="button" onclick="switchMode('video')" id="tab-mode-video" class="px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold text-slate-400 hover:text-white whitespace-nowrap transition">
+                            🎬 Video 30s
+                        </button>
+                        <button type="button" onclick="switchMode('engine')" id="tab-mode-engine" class="px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold text-slate-400 hover:text-amber-300 whitespace-nowrap transition">
+                            🎮 Engine 5
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- BARIS 2 (KHUSUS MODE CHAT AI): Level Auto/Lv.2/Lv.3 + Web ON/OFF + Chat Baru -->
+                <div id="chat-subbar" class="flex items-center justify-between gap-1.5 pt-1.5 border-t border-white/10">
+                    <!-- Pemilih 3 Tingkat Kecerdasan -->
+                    <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                        <button type="button" onclick="setAiLevel('auto')" id="btn-lvl-auto" class="px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold bg-violet-600 text-white shadow-sm whitespace-nowrap transition">
+                            ✨ Auto
+                        </button>
+                        <button type="button" onclick="setAiLevel('lv2')" id="btn-lvl-lv2" class="px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 whitespace-nowrap transition">
+                            ⚡ Lv.2
+                        </button>
+                        <button type="button" onclick="setAiLevel('lv3')" id="btn-lvl-lv3" class="px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 whitespace-nowrap transition">
+                            👑 Lv.3
+                        </button>
+                    </div>
+
+                    <!-- Kontrol Web ON/OFF & Chat Baru -->
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="toggleWebSearch()" id="btn-web-toggle" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-[11px] font-bold text-emerald-300 whitespace-nowrap transition">
+                            🌐 Web: ON
+                        </button>
+                        <button type="button" onclick="openResetModal()" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-rose-500/20 border border-white/10 hover:border-rose-500/35 text-[11px] font-semibold text-slate-300 hover:text-rose-200 whitespace-nowrap transition">
+                            ↻ Chat Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===================================================================== -->
+        <!-- MODE 1: CHAT AI (#view-chat — LANGSUNG TAMPIL PENUH SAAT DIBUKA)      -->
+        <!-- ===================================================================== -->
+        <main id="view-chat" style="flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden;">
+
+            <!-- Area Scroll Percakapan -->
+            <div id="chat-scroll" style="flex: 1; min-height: 0; overflow-y: auto;" class="px-3.5 py-4 sm:px-6 scroll-smooth">
+                <!-- Welcome Screen Aktif (Langsung terlihat saat riwayat kosong) -->
+                <div id="chat-welcome" class="max-w-2xl mx-auto space-y-4 pt-1 pb-4 animate-fade-up">
+                    <div class="glass-card rounded-3xl p-5 sm:p-6 text-center space-y-3 shadow-xl">
+                        <div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br from-violet-600 via-fuchsia-500 to-cyan-500 flex items-center justify-center text-white font-extrabold text-base shadow-lg">
+                            RN
+                        </div>
+                        <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-violet-500/20 text-violet-300 border border-violet-500/35">
+                            ✨ Naomi Otomatis (Adaptif)
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-bold text-white">Selamat Datang di R. Naomi AI</h2>
+                        <p id="welcome-desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-lg mx-auto">
+                            Asisten pintar berbahasa Indonesia dengan kesadaran waktu real-time, akses pencarian web langsung, 3 level kecerdasan (Auto, Lv.2, Lv.3), Studio Video 30s, dan Naomi Engine 5.
+                        </p>
+                    </div>
+
+                    <!-- 4 Kartu Prompt Cepat -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <button type="button" onclick="quickAskWithLevel('auto', 'Hari ini hari apa, tanggal berapa, jam berapa sekarang, dan rangkumkan berita utama terkini hari ini?')" class="glass-card hover:bg-violet-500/15 hover:border-violet-500/45 p-3.5 rounded-2xl text-left transition space-y-1">
+                            <div class="text-xs font-bold text-violet-300">🌐 Cek Waktu &amp; Berita Terkini</div>
+                            <p class="text-[11px] text-slate-300 leading-snug">Tanya tanggal real-time hari ini &amp; rangkuman kabar terbaru dari internet.</p>
+                        </button>
+                        <button type="button" onclick="quickAskWithLevel('lv2', 'Jelaskan secara sigap dan terstruktur konsep dasar fisika kuantum beserta contoh soal level SMA ke atas.')" class="glass-card hover:bg-cyan-500/15 hover:border-cyan-500/45 p-3.5 rounded-2xl text-left transition space-y-1">
+                            <div class="text-xs font-bold text-cyan-300">⚡ Uji Naomi Lv.2 (SMA+)</div>
+                            <p class="text-[11px] text-slate-300 leading-snug">Penjelasan tajam, sistematis, dan cepat setara pelajar SMA hingga kuliah awal.</p>
+                        </button>
+                        <button type="button" onclick="quickAskWithLevel('lv3', 'Buktikan teorema nilai rata-rata (Mean Value Theorem) dalam kalkulus lanjut dan buatkan implementasi algoritma optimasi Newton-Raphson di Python.')" class="glass-card hover:bg-amber-500/15 hover:border-amber-500/45 p-3.5 rounded-2xl text-left transition space-y-1">
+                            <div class="text-xs font-bold text-amber-300">👑 Uji Naomi Lv.3 (Pakar &gt; S2)</div>
+                            <p class="text-[11px] text-slate-300 leading-snug">Arsitektur coding tingkat tinggi, penyusunan konsep, &amp; matematika lanjut &gt; S1/S2.</p>
+                        </button>
+                        <button type="button" onclick="switchMode('engine')" class="glass-card hover:bg-sky-500/15 hover:border-sky-500/45 p-3.5 rounded-2xl text-left transition space-y-1">
+                            <div class="text-xs font-bold text-sky-300">🎮 Buka Naomi Engine 5</div>
+                            <p class="text-[11px] text-slate-300 leading-snug">Rakit game &amp; multi-coding (&gt; S1) bergaya Godot Engine 4 dengan bahan dari galeri HP.</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Container Gelembung Chat -->
+                <div id="chat-messages" class="max-w-3xl mx-auto space-y-4 hidden pb-2"></div>
+            </div>
+
+            <!-- Bar Input Chat Bawah -->
+            <div class="px-3 pb-3 pt-2 sm:px-6 bg-gradient-to-t from-[#070a12] via-[#070a12]/95 to-transparent shrink-0">
+                <div class="max-w-3xl mx-auto space-y-2">
+                    <!-- Chip Pintasan Cepat -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                        <button type="button" onclick="sendChatPreset('Rangkumkan berita utama terkini hari ini di Indonesia dan dunia secara singkat &amp; akurat.')" class="shrink-0 px-3 py-1 rounded-full glass-card hover:bg-white/10 text-[11px] font-medium text-slate-200 transition">
+                            📰 Berita Hari Ini
+                        </button>
+                        <button type="button" onclick="sendChatPreset('Sebutkan hari, tanggal lengkap, jam, dan zona waktu saat ini secara presisi.')" class="shrink-0 px-3 py-1 rounded-full glass-card hover:bg-white/10 text-[11px] font-medium text-slate-200 transition">
+                            🕒 Waktu Real-Time
+                        </button>
+                        <button type="button" onclick="fillChatInput('Buatkan arsitektur kode lengkap dan efisien untuk: ')" class="shrink-0 px-3 py-1 rounded-full glass-card hover:bg-white/10 text-[11px] font-medium text-slate-200 transition">
+                            💻 Coding &gt; S1
+                        </button>
+                        <button type="button" onclick="fillChatInput('Selesaikan soal matematika ini secara detail: ')" class="shrink-0 px-3 py-1 rounded-full glass-card hover:bg-white/10 text-[11px] font-medium text-slate-200 transition">
+                            📐 Matematika
+                        </button>
+                        <button type="button" onclick="fillChatInput('/video ')" class="shrink-0 px-3 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40 text-[11px] font-semibold text-fuchsia-200 transition">
+                            🎬 /video 30 Detik
+                        </button>
+                    </div>
+
+                    <!-- Form Input Pesan -->
+                    <form onsubmit="onChatFormSubmit(event)" class="bg-slate-900/95 rounded-2xl p-1.5 flex items-end gap-2 border border-white/15 focus-within:border-violet-500/60 shadow-2xl">
+                        <textarea
+                            id="chat-input"
+                            rows="1"
+                            placeholder="Tanya apa saja ke R. Naomi AI (atau ketik /video ide)..."
+                            class="w-full bg-transparent text-sm text-white placeholder-slate-400 px-3 py-2 focus:outline-none resize-none max-h-32 leading-relaxed"
+                            oninput="resizeChatBox(this)"
+                            onkeydown="onChatKeyDown(event)"
+                        ></textarea>
+                        <button type="submit" id="chat-submit-btn" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:opacity-40 text-white font-bold text-xs sm:text-sm shrink-0 shadow-lg transition active:scale-95">
+                            Kirim
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- ===================================================================== -->
+        <!-- MODE 2: STUDIO VIDEO AI 30 DETIK (#view-video)                        -->
+        <!-- ===================================================================== -->
+        <section id="view-video" style="flex: 1; min-height: 0; overflow-y: auto;" class="hidden px-3.5 py-4 sm:px-6 scroll-smooth">
+            <div class="max-w-3xl mx-auto space-y-5 pb-10 animate-fade-up">
+
+                <!-- Header Studio Video -->
+                <div class="glass-card rounded-3xl p-4 sm:p-6 space-y-2 shadow-xl">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/35">
+                            🎬 STUDIO VIDEO AI • DURASI TEPAT 30 DETIK (5 × 6s)
+                        </span>
+                        <span class="text-[11px] font-mono text-cyan-300">Canvas 30 FPS • Web Audio Synth</span>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold text-white">Generator Video AI 30 Detik</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Tulis ide bebas tanpa batasan. Sutradara Gemini AI merancang 5 adegan berurutan (total 30 detik), merender animasi multi-layer + audio latar synth, dan siap diunduh menjadi file video.
+                    </p>
+                </div>
+
+                <!-- Form Konfigurasi Video -->
+                <div class="glass-card rounded-3xl p-4 sm:p-6 space-y-4 shadow-xl">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <label for="video-prompt" class="text-xs sm:text-sm font-bold text-slate-200">Ide / Konsep Video</label>
+                            <button type="button" onclick="randomizeVideoIdea()" class="px-3 py-1 rounded-xl bg-violet-500/20 hover:bg-violet-500/30 border border-violet-500/40 text-xs font-semibold text-violet-200 transition">
+                                🎲 Acak Ide
+                            </button>
+                        </div>
+                        <textarea id="video-prompt" rows="3" placeholder="Contoh: Ksatria cahaya bertarung melawan naga bayangan di puncak kuil melayang saat hujan meteor ungu turun..." class="w-full rounded-2xl bg-slate-950/90 border border-white/15 focus:border-fuchsia-500/60 p-3 text-sm text-white placeholder-slate-500 focus:outline-none resize-none"></textarea>
+                    </div>
+
+                    <!-- 6 Gaya Visual -->
+                    <div class="space-y-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Gaya Visual (6 Pilihan)</span>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <button type="button" onclick="selectVideoStyle('Anime Studio')" data-style="Anime Studio" class="vid-style-btn p-2.5 rounded-xl border border-fuchsia-500/60 bg-fuchsia-500/15 text-left text-xs font-bold text-white transition">🌸 Anime Studio</button>
+                            <button type="button" onclick="selectVideoStyle('Sinematik 4K')" data-style="Sinematik 4K" class="vid-style-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-left text-xs font-semibold text-slate-300 transition">🎥 Sinematik 4K</button>
+                            <button type="button" onclick="selectVideoStyle('3D Fantasy Game')" data-style="3D Fantasy Game" class="vid-style-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-left text-xs font-semibold text-slate-300 transition">🐉 3D Fantasy Game</button>
+                            <button type="button" onclick="selectVideoStyle('Cyberpunk Neon')" data-style="Cyberpunk Neon" class="vid-style-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-left text-xs font-semibold text-slate-300 transition">🌆 Cyberpunk Neon</button>
+                            <button type="button" onclick="selectVideoStyle('Misteri Gelap')" data-style="Misteri Gelap" class="vid-style-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-left text-xs font-semibold text-slate-300 transition">🕯️ Misteri Gelap</button>
+                            <button type="button" onclick="selectVideoStyle('Edukasi &amp; Konten')" data-style="Edukasi &amp; Konten" class="vid-style-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-left text-xs font-semibold text-slate-300 transition">📚 Edukasi &amp; Konten</button>
+                        </div>
+                    </div>
+
+                    <!-- 3 Rasio Aspek -->
+                    <div class="space-y-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Rasio Aspek</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="selectVideoAspect('9:16')" data-aspect="9:16" class="vid-aspect-btn p-2.5 rounded-xl border border-cyan-500/60 bg-cyan-500/15 text-center text-xs font-bold text-white transition">9:16 (HP / Shorts)</button>
+                            <button type="button" onclick="selectVideoAspect('16:9')" data-aspect="16:9" class="vid-aspect-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-center text-xs font-semibold text-slate-300 transition">16:9 (YouTube)</button>
+                            <button type="button" onclick="selectVideoAspect('1:1')" data-aspect="1:1" class="vid-aspect-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-center text-xs font-semibold text-slate-300 transition">1:1 (Persegi)</button>
+                        </div>
+                    </div>
+
+                    <!-- Progress Generasi -->
+                    <div id="video-gen-progress" class="hidden rounded-2xl bg-slate-950/90 border border-violet-500/35 p-3.5 space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                            <span id="video-gen-text" class="font-semibold text-violet-200">Menyusun 5 adegan sinematik...</span>
+                            <span id="video-gen-pct" class="font-mono font-bold text-cyan-300">35%</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                            <div id="video-gen-bar" class="h-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-400 transition-all duration-300" style="width: 35%"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="video-generate-btn" onclick="generateVideo30s()" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600 hover:brightness-110 disabled:opacity-50 text-white font-bold text-sm shadow-xl transition active:scale-[0.99]">
+                        ✨ Buat Video AI (30 Detik)
+                    </button>
+                </div>
+
+                <!-- Pemutar Video & Download -->
+                <div id="video-player-section" class="hidden glass-card rounded-3xl p-4 sm:p-6 space-y-4 shadow-2xl">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5 text-[11px] font-mono text-fuchsia-300">
+                                <span id="vp-style-badge">Anime Studio</span>
+                                <span>•</span>
+                                <span id="vp-aspect-badge">9:16</span>
+                                <span>• 30.0s</span>
+                            </div>
+                            <h3 id="vp-title" class="text-base sm:text-lg font-bold text-white truncate">Judul Video</h3>
+                        </div>
+                        <button type="button" id="vp-download-btn" onclick="exportVideoWebm30s()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:brightness-110 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg transition active:scale-95">
+                            ⬇️ Download Video (30 Detik)
+                        </button>
+                    </div>
+
+                    <!-- Progress Export MediaRecorder -->
+                    <div id="vp-rec-box" class="hidden rounded-2xl bg-emerald-950/50 border border-emerald-500/40 p-3 space-y-1.5">
+                        <div class="flex items-center justify-between text-xs">
+                            <span id="vp-rec-label" class="font-semibold text-emerald-200">Merekam 30 FPS...</span>
+                            <div class="flex items-center gap-2">
+                                <span id="vp-rec-pct" class="font-mono font-bold text-emerald-300">0%</span>
+                                <button type="button" onclick="cancelVideoRec()" class="px-2 py-0.5 rounded bg-rose-500/25 text-rose-200 text-[10px] font-bold">Batal</button>
+                            </div>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-black/50 overflow-hidden">
+                            <div id="vp-rec-bar" class="h-full bg-emerald-400 transition-all duration-150" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Render 30 FPS -->
+                    <div class="w-full bg-[#04060c] rounded-2xl border border-white/10 p-2 flex items-center justify-center overflow-hidden">
+                        <canvas id="video-canvas" class="max-h-[52vh] w-auto h-auto max-w-full rounded-xl shadow-2xl"></canvas>
+                    </div>
+
+                    <!-- Timeline Scrubber 00:00 - 00:30 -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between text-xs font-mono">
+                            <span id="vp-time-cur" class="text-cyan-300 font-bold">00:00</span>
+                            <span id="vp-scene-label" class="text-slate-300 font-sans">Adegan 1/5</span>
+                            <span class="text-slate-400">00:30</span>
+                        </div>
+                        <div id="vp-timeline" class="relative h-3 rounded-full bg-slate-800 border border-white/10 cursor-pointer overflow-hidden">
+                            <div class="absolute inset-y-0 left-[20%] w-px bg-white/25 pointer-events-none"></div>
+                            <div class="absolute inset-y-0 left-[40%] w-px bg-white/25 pointer-events-none"></div>
+                            <div class="absolute inset-y-0 left-[60%] w-px bg-white/25 pointer-events-none"></div>
+                            <div class="absolute inset-y-0 left-[80%] w-px bg-white/25 pointer-events-none"></div>
+                            <div id="vp-timeline-fill" class="h-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-400 pointer-events-none" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Kontrol Playback -->
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="vp-play-btn" onclick="toggleVideoPlayback()" class="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs transition">⏸ Jeda</button>
+                            <button type="button" onclick="restartVideoPlayback()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 font-semibold text-xs transition">↻ Ulangi</button>
+                        </div>
+                        <button type="button" id="vp-mute-btn" onclick="toggleVideoMute()" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 font-semibold text-xs transition">🔊 Audio Synth: ON</button>
+                    </div>
+
+                    <!-- Storyboard 5 Adegan -->
+                    <div id="vp-scenes-list" class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-2 border-t border-white/10"></div>
+                </div>
+
+                <!-- Riwayat Proyek Video Lokal -->
+                <div id="video-history-section" class="hidden glass-card rounded-3xl p-4 sm:p-5 space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Riwayat Video 30s Tersimpan</h3>
+                    <div id="video-history-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODE 3: NAOMI ENGINE 5 (#view-engine — GODOT 4 IDE + >S1 CODING)      -->
+        <!-- ===================================================================== -->
+        <section id="view-engine" style="flex: 1; min-height: 0; overflow: hidden;" class="hidden flex-col godot-deep text-slate-200">
+
+            <!-- TOP ENGINE BAR (Main Menu | 2D / 3D / Script / Game / Asset Store | Play / Pause / Stop) -->
+            <div class="godot-bar border-b godot-border px-2 py-1.5 sm:px-4 flex items-center justify-between gap-1.5 shrink-0 relative z-30">
+                <!-- Main Menu Dropdown -->
+                <div class="relative shrink-0">
+                    <button type="button" onclick="toggleEngineMenu()" class="px-2.5 py-1.5 rounded-lg godot-panel hover:bg-[#2c3440] border godot-border text-[11px] sm:text-xs font-bold text-slate-100 flex items-center gap-1 whitespace-nowrap">
+                        <span class="text-[#58a6ff]">☰</span>
+                        <span>Main Menu</span>
+                    </button>
+                    <div id="engine-menu-dropdown" class="hidden absolute top-full left-0 mt-1.5 w-60 rounded-xl godot-panel border godot-border shadow-2xl py-1.5 z-50 text-xs">
+                        <button type="button" onclick="engineResetWorkspace(); toggleEngineMenu();" class="w-full px-3.5 py-2 text-left hover:bg-[#2c3440] text-slate-200 flex items-center gap-2">
+                            <span>📄</span><span>Proyek Baru</span>
+                        </button>
+                        <button type="button" onclick="engineExportHtml5Game(); toggleEngineMenu();" class="w-full px-3.5 py-2 text-left hover:bg-[#2c3440] text-emerald-300 font-semibold flex items-center gap-2">
+                            <span>🎮</span><span>Export Game HTML5 Siap Main</span>
+                        </button>
+                        <button type="button" onclick="engineExportScriptBundle(); toggleEngineMenu();" class="w-full px-3.5 py-2 text-left hover:bg-[#2c3440] text-amber-300 font-semibold flex items-center gap-2">
+                            <span>📦</span><span>Export Paket Script</span>
+                        </button>
+                        <div class="my-1 border-t godot-border"></div>
+                        <button type="button" onclick="engineResetWorkspace(); toggleEngineMenu();" class="w-full px-3.5 py-2 text-left hover:bg-rose-500/20 text-rose-300 flex items-center gap-2">
+                            <span>↻</span><span>Reset Workspace</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Center Workspace Tabs: 2D | 3D | Script | Game | Asset Store -->
+                <div class="flex items-center bg-[#14181d] p-0.5 rounded-lg border godot-border overflow-x-auto no-scrollbar">
+                    <button type="button" onclick="setEngineTab('2D')" id="etab-2D" class="px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-bold border godot-tab-active whitespace-nowrap transition">2D</button>
+                    <button type="button" onclick="setEngineTab('3D')" id="etab-3D" class="px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-semibold border border-transparent text-slate-400 hover:text-white whitespace-nowrap transition">3D</button>
+                    <button type="button" onclick="setEngineTab('Script')" id="etab-Script" class="px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-semibold border border-transparent text-slate-400 hover:text-white whitespace-nowrap transition">Script</button>
+                    <button type="button" onclick="setEngineTab('Game')" id="etab-Game" class="px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-semibold border border-transparent text-slate-400 hover:text-white whitespace-nowrap transition">Game</button>
+                    <button type="button" onclick="setEngineTab('Asset Store')" id="etab-Asset Store" class="px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-semibold border border-transparent text-slate-400 hover:text-amber-300 whitespace-nowrap transition">Asset Store</button>
+                </div>
+
+                <!-- Transport Controls: Play / Pause / Stop -->
+                <div class="flex items-center gap-1 shrink-0">
+                    <button type="button" onclick="enginePlayGame()" class="px-2 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/45 text-emerald-300 text-xs font-bold" title="Play">▶</button>
+                    <button type="button" onclick="enginePauseGame()" class="px-2 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/45 text-amber-300 text-xs font-bold" title="Pause">⏸</button>
+                    <button type="button" onclick="engineStopGame()" class="px-2 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/45 text-rose-300 text-xs font-bold" title="Stop">⏹</button>
+                </div>
+            </div>
+
+            <!-- AI COMMAND BAR (ARAHAN GAME & MULTI-CODING > S1) -->
+            <div class="godot-panel border-b godot-border px-2.5 py-2 sm:px-4 space-y-1.5 shrink-0">
+                <form onsubmit="onEngineCommandSubmit(event)" class="max-w-6xl mx-auto flex items-center gap-1.5">
+                    <label class="cursor-pointer px-2.5 py-2 rounded-xl bg-[#252b34] hover:bg-[#323a46] border godot-border text-sky-300 text-xs font-bold flex items-center gap-1 shrink-0" title="Impor Bahan dari Galeri HP">
+                        <span>🖼️</span>
+                        <span class="hidden sm:inline">+ Impor Bahan</span>
+                        <input type="file" accept="image/*" multiple onchange="onEngineUploadGallery(event)" class="hidden">
+                    </label>
+                    <input
+                        type="text"
+                        id="engine-prompt-input"
+                        placeholder="Arahan Engine 5 (misal: Buatkan game platformer 2D pakai sprite upload &amp; script GDScript 4)..."
+                        class="flex-1 min-w-0 bg-[#14181d] border godot-border focus:border-[#478cbf] rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none"
+                    >
+                    <button type="submit" id="engine-build-btn" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#478cbf] to-amber-500 hover:brightness-110 disabled:opacity-50 text-slate-950 font-extrabold text-xs sm:text-sm shrink-0 shadow">
+                        ⚡ Rakit
+                    </button>
+                </form>
+
+                <!-- Contoh Arahan Cepat -->
+                <div class="max-w-6xl mx-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    <span class="text-[10px] font-bold text-amber-300 shrink-0">Master &gt;S1:</span>
+                    <button type="button" onclick="runEnginePreset('Naomi, buatkan game platformer 2D ninja lompat rintangan &amp; kumpulkan kristal pakai karakter yang ku-upload')" class="shrink-0 px-2.5 py-0.5 rounded-full bg-[#14181d] hover:bg-[#252b34] border godot-border text-[11px] text-slate-300">
+                        🎮 Platformer 2D
+                    </button>
+                    <button type="button" onclick="runEnginePreset('Buatkan sistem inventory RPG &amp; pertarungan dungeon lengkap dalam GDScript Godot 4, C# Unity, dan GLSL Shader')" class="shrink-0 px-2.5 py-0.5 rounded-full bg-[#14181d] hover:bg-[#252b34] border godot-border text-[11px] text-slate-300">
+                        ⚔️ RPG Inventory &amp; Script
+                    </button>
+                    <button type="button" onclick="runEnginePreset('Buatkan game Space Shooter luar angkasa tembak asteroid dan pesawat musuh')" class="shrink-0 px-2.5 py-0.5 rounded-full bg-[#14181d] hover:bg-[#252b34] border godot-border text-[11px] text-slate-300">
+                        🚀 Space Shooter
+                    </button>
+                </div>
+            </div>
+
+            <!-- MOBILE SUB-TAB DOCK (< lg) AGAR SEMUA PANEL GODOT MUDAH DIAKSES DI HP -->
+            <div class="lg:hidden godot-bar border-b godot-border px-2.5 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+                <button type="button" onclick="setEngineMobilePane('main')" id="emob-main" class="px-3 py-1 rounded-lg text-xs font-bold border godot-tab-active shrink-0">
+                    🖥️ Viewport / Editor
+                </button>
+                <button type="button" onclick="setEngineMobilePane('left')" id="emob-left" class="px-3 py-1 rounded-lg text-xs font-semibold border border-transparent text-slate-400 shrink-0">
+                    🌳 Skena &amp; res://
+                </button>
+                <button type="button" onclick="setEngineMobilePane('right')" id="emob-right" class="px-3 py-1 rounded-lg text-xs font-semibold border border-transparent text-slate-400 shrink-0">
+                    🔧 Inspektur &amp; Dock
+                </button>
+            </div>
+
+            <!-- IDE WORKSPACE BODY (3 KOLOM DESKTOP + BOTTOM DOCK) -->
+            <div style="flex: 1; min-height: 0;" class="flex flex-col overflow-hidden">
+                <div style="flex: 1; min-height: 0;" class="flex overflow-hidden">
+
+                    <!-- KOLOM KIRI: SKENA (NODE TREE) & FILESYSTEM (res://) -->
+                    <aside id="engine-pane-left" class="hidden lg:flex lg:w-64 xl:w-72 flex-col border-r godot-border godot-panel shrink-0 min-h-0">
+                        <!-- Skena -->
+                        <div class="flex-1 flex flex-col min-h-0 border-b godot-border">
+                            <div class="godot-bar px-3 py-1.5 border-b godot-border flex items-center justify-between">
+                                <span class="text-xs font-bold text-[#58a6ff]">Skena (Node Tree)</span>
+                                <button type="button" onclick="engineAddNode()" class="px-2 py-0.5 rounded bg-[#14181d] hover:bg-[#2c3440] border godot-border text-[11px] font-bold text-slate-200">+ Node</button>
+                            </div>
+                            <div id="engine-node-list" class="flex-1 overflow-y-auto p-2 space-y-1 text-xs"></div>
+                        </div>
+
+                        <!-- FileSystem res:// -->
+                        <div class="h-1/2 flex flex-col min-h-0">
+                            <div class="godot-bar px-3 py-1.5 border-b godot-border flex items-center justify-between gap-1">
+                                <span class="text-xs font-bold text-[#58a6ff] truncate">FileSystem (res://)</span>
+                                <label class="cursor-pointer px-2 py-1 rounded bg-[#478cbf]/25 hover:bg-[#478cbf]/40 border border-[#478cbf]/50 text-[10px] font-bold text-sky-200 shrink-0">
+                                    + Impor Bahan
+                                    <input type="file" accept="image/*" multiple onchange="onEngineUploadGallery(event)" class="hidden">
+                                </label>
+                            </div>
+                            <div id="engine-res-list" class="flex-1 overflow-y-auto p-2 space-y-1 text-xs font-mono"></div>
+                        </div>
+                    </aside>
+
+                    <!-- KOLOM TENGAH: 2D/3D VIEWPORT | SCRIPT STUDIO | GAME RUNTIME | ASSET STORE -->
+                    <div id="engine-pane-main" class="flex-1 flex flex-col min-w-0 min-h-0 overflow-hidden">
+
+                        <!-- SUB-VIEW 1: 2D / 3D VIEWPORT -->
+                        <div id="esub-viewport" class="flex-1 flex flex-col min-h-0">
+                            <div class="godot-panel border-b godot-border px-3 py-1 flex items-center justify-between text-xs shrink-0">
+                                <div class="flex items-center gap-2">
+                                    <span id="evp-title" class="font-bold text-[#58a6ff]">Viewport 2D</span>
+                                    <span class="text-[11px] text-slate-400 hidden sm:inline">• Seret Node di layar untuk mengatur koordinat</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button type="button" onclick="engineZoom(-15)" class="px-2 py-0.5 rounded bg-[#14181d] border godot-border text-xs font-bold">-</button>
+                                    <span id="evp-zoom" class="font-mono text-[11px] px-1.5 text-slate-300">100%</span>
+                                    <button type="button" onclick="engineZoom(15)" class="px-2 py-0.5 rounded bg-[#14181d] border godot-border text-xs font-bold">+</button>
+                                </div>
+                            </div>
+                            <div class="flex-1 relative min-h-0 overflow-hidden bg-[#181c22]">
+                                <canvas id="engine-vp-canvas" class="w-full h-full block cursor-crosshair"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- SUB-VIEW 2: SCRIPT STUDIO (> S1 MULTI-BAHASA) -->
+                        <div id="esub-script" class="hidden flex-1 flex flex-col min-h-0 bg-[#11151a]">
+                            <div class="godot-panel border-b godot-border px-2.5 py-1.5 flex items-center justify-between gap-2 flex-wrap shrink-0">
+                                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                                    <button type="button" onclick="selectEngineLang('GDScript Godot 4')" data-lang="GDScript Godot 4" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-bold border godot-tab-active shrink-0">GDScript 4</button>
+                                    <button type="button" onclick="selectEngineLang('C# Unity')" data-lang="C# Unity" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0">C# Unity</button>
+                                    <button type="button" onclick="selectEngineLang('JavaScript / Three.js')" data-lang="JavaScript / Three.js" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0">JS / Three.js</button>
+                                    <button type="button" onclick="selectEngineLang('GLSL Shader')" data-lang="GLSL Shader" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0">GLSL Shader</button>
+                                    <button type="button" onclick="selectEngineLang('C++')" data-lang="C++" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0">C++</button>
+                                    <button type="button" onclick="selectEngineLang('Python')" data-lang="Python" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0">Python</button>
+                                    <button type="button" onclick="selectEngineLang('Lua')" data-lang="Lua" class="elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0">Lua</button>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <button type="button" onclick="copyEngineCode(this)" class="px-2.5 py-1 rounded bg-[#252b34] hover:bg-[#323a46] border godot-border text-[11px] font-bold text-slate-200">Salin Script</button>
+                                    <button type="button" onclick="downloadEngineCode()" class="px-2.5 py-1 rounded bg-[#478cbf]/25 hover:bg-[#478cbf]/40 border border-[#478cbf]/50 text-[11px] font-bold text-sky-200">Unduh Script</button>
+                                </div>
+                            </div>
+                            <div class="flex-1 flex min-h-0 overflow-hidden font-mono text-xs">
+                                <pre id="engine-code-lines" class="px-2.5 py-3 text-right text-slate-500 bg-[#0d1117] border-r godot-border select-none overflow-hidden">1</pre>
+                                <textarea id="engine-code-area" oninput="onEngineCodeEdit()" onscroll="syncEngineCodeScroll()" spellcheck="false" class="flex-1 bg-[#11151a] text-slate-100 p-3 focus:outline-none resize-none whitespace-pre overflow-auto leading-relaxed"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- SUB-VIEW 3: PLAYABLE GAME RUNTIME + MOBILE VIRTUAL D-PAD -->
+                        <div id="esub-game" class="hidden flex-1 flex flex-col min-h-0 bg-[#090c10]">
+                            <div class="godot-panel border-b godot-border px-3 py-1.5 flex items-center justify-between text-xs shrink-0">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                                    <span id="egame-title" class="font-bold text-white truncate">Naomi Game Runtime</span>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span id="egame-score" class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">SKOR: 0</span>
+                                    <button type="button" onclick="enginePlayGame()" class="px-2.5 py-0.5 rounded bg-[#252b34] border godot-border text-slate-200 font-semibold">↻ Reset</button>
+                                </div>
+                            </div>
+                            <div class="flex-1 relative min-h-0 overflow-hidden">
+                                <canvas id="engine-game-canvas" class="w-full h-full block"></canvas>
+
+                                <!-- Virtual Touch Controls untuk Layar Sentuh HP -->
+                                <div class="absolute inset-x-3 bottom-3 flex items-end justify-between pointer-events-none z-20 select-none">
+                                    <!-- D-Pad Kiri -->
+                                    <div class="grid grid-cols-3 gap-1 w-28 h-28 pointer-events-auto opacity-85">
+                                        <div></div>
+                                        <button type="button" onpointerdown="setTouchKey('up', true)" onpointerup="setTouchKey('up', false)" onpointerleave="setTouchKey('up', false)" class="rounded-xl bg-slate-800/90 active:bg-[#478cbf] border border-white/20 text-white font-bold flex items-center justify-center shadow-lg">▲</button>
+                                        <div></div>
+                                        <button type="button" onpointerdown="setTouchKey('left', true)" onpointerup="setTouchKey('left', false)" onpointerleave="setTouchKey('left', false)" class="rounded-xl bg-slate-800/90 active:bg-[#478cbf] border border-white/20 text-white font-bold flex items-center justify-center shadow-lg">◀</button>
+                                        <div class="rounded-xl bg-slate-900/60 border border-white/10"></div>
+                                        <button type="button" onpointerdown="setTouchKey('right', true)" onpointerup="setTouchKey('right', false)" onpointerleave="setTouchKey('right', false)" class="rounded-xl bg-slate-800/90 active:bg-[#478cbf] border border-white/20 text-white font-bold flex items-center justify-center shadow-lg">▶</button>
+                                        <div></div>
+                                        <button type="button" onpointerdown="setTouchKey('down', true)" onpointerup="setTouchKey('down', false)" onpointerleave="setTouchKey('down', false)" class="rounded-xl bg-slate-800/90 active:bg-[#478cbf] border border-white/20 text-white font-bold flex items-center justify-center shadow-lg">▼</button>
+                                        <div></div>
+                                    </div>
+
+                                    <!-- Tombol Aksi Kanan -->
+                                    <div class="flex items-center gap-2.5 pointer-events-auto opacity-90">
+                                        <button type="button" onpointerdown="setTouchKey('attack', true)" onpointerup="setTouchKey('attack', false)" onpointerleave="setTouchKey('attack', false)" class="w-14 h-14 rounded-full bg-amber-500 active:bg-amber-400 border-2 border-amber-200 text-slate-950 font-extrabold text-xs shadow-xl flex items-center justify-center">ATK</button>
+                                        <button type="button" onpointerdown="setTouchKey('jump', true)" onpointerup="setTouchKey('jump', false)" onpointerleave="setTouchKey('jump', false)" class="w-16 h-16 rounded-full bg-emerald-500 active:bg-emerald-400 border-2 border-emerald-200 text-slate-950 font-extrabold text-xs shadow-xl flex items-center justify-center">JUMP</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUB-VIEW 4: ASSET STORE -->
+                        <div id="esub-store" class="hidden flex-1 overflow-y-auto p-3.5 sm:p-5 bg-[#14181d] space-y-3">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div>
+                                    <h3 class="text-sm sm:text-base font-bold text-white">Naomi Asset Store (Siap Pakai ke res://)</h3>
+                                    <p class="text-xs text-slate-400">Klik tombol pasang untuk langsung menambahkan aset ke folder proyek <code class="text-sky-300">res://</code> dan memasangnya ke Node terpilih.</p>
+                                </div>
+                            </div>
+                            <div id="engine-store-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                        </div>
+
+                    </div>
+
+                    <!-- KOLOM KANAN: INSPEKTUR & DOCK BAWAH -->
+                    <aside id="engine-pane-right" class="hidden lg:flex lg:w-72 flex-col border-l godot-border godot-panel shrink-0 min-h-0">
+                        <!-- Inspektur -->
+                        <div class="flex-1 flex flex-col min-h-0 border-b godot-border">
+                            <div class="godot-bar px-3 py-1.5 border-b godot-border flex items-center justify-between">
+                                <span class="text-xs font-bold text-[#58a6ff]">Inspektur</span>
+                                <span id="einsp-type" class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#14181d] text-slate-300">Node2D</span>
+                            </div>
+                            <div id="engine-inspector-body" class="flex-1 overflow-y-auto p-2.5 space-y-2.5 text-xs"></div>
+                        </div>
+
+                        <!-- Bottom Dock: Output | Pendebug | Suara | Animasi | Editor Shader -->
+                        <div class="h-48 flex flex-col min-h-0">
+                            <div class="godot-bar px-2 py-1 border-b godot-border flex items-center gap-1 overflow-x-auto no-scrollbar">
+                                <button type="button" onclick="setEngineDockTab('Output')" data-dock="Output" class="edock-btn px-2 py-0.5 rounded text-[11px] font-bold border godot-tab-active shrink-0">Output</button>
+                                <button type="button" onclick="setEngineDockTab('Pendebug')" data-dock="Pendebug" class="edock-btn px-2 py-0.5 rounded text-[11px] font-semibold border border-transparent text-slate-400 shrink-0">Pendebug</button>
+                                <button type="button" onclick="setEngineDockTab('Suara')" data-dock="Suara" class="edock-btn px-2 py-0.5 rounded text-[11px] font-semibold border border-transparent text-slate-400 shrink-0">Suara</button>
+                                <button type="button" onclick="setEngineDockTab('Animasi')" data-dock="Animasi" class="edock-btn px-2 py-0.5 rounded text-[11px] font-semibold border border-transparent text-slate-400 shrink-0">Animasi</button>
+                                <button type="button" onclick="setEngineDockTab('Editor Shader')" data-dock="Editor Shader" class="edock-btn px-2 py-0.5 rounded text-[11px] font-semibold border border-transparent text-slate-400 shrink-0">Editor Shader</button>
+                            </div>
+                            <div id="engine-dock-content" class="flex-1 overflow-y-auto p-2.5 font-mono text-[11px] bg-[#11151a] space-y-1"></div>
+                        </div>
+                    </aside>
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL PERMINTAAN IZIN SISTEM NAOMI ENGINE 5                              -->
+    <!-- ========================================================================= -->
+    <div id="engine-perm-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="godot-panel border godot-border rounded-3xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl animate-fade-up">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#478cbf] to-amber-500 flex items-center justify-center text-slate-950 font-extrabold text-base shrink-0">E5</div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/35">Otorisasi Sistem &gt; S1</span>
+                    <h3 class="text-base sm:text-lg font-bold text-white mt-0.5">Permintaan Izin Naomi Engine 5</h3>
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Sebelum masuk ke workspace <strong class="text-white">Naomi Engine 5</strong>, izinkan pengaktifan modul pengembangan berikut:
+            </p>
+
+            <div class="space-y-2 text-xs">
+                <div class="p-3 rounded-2xl bg-[#14181d] border godot-border">
+                    <div class="font-bold text-amber-300">1. Core Kecerdasan &amp; Multi-Coding (&gt; S1)</div>
+                    <p class="text-slate-400 mt-0.5">Menyusun arsitektur node game dan kode lengkap GDScript 4, C# Unity, GLSL Shader, C++, Python, JS, &amp; Lua.</p>
+                </div>
+                <div class="p-3 rounded-2xl bg-[#14181d] border godot-border">
+                    <div class="font-bold text-[#58a6ff]">2. Akses Referensi Web Profesional</div>
+                    <p class="text-slate-400 mt-0.5">Menggunakan pola desain engine dan algoritma fisika terbaru secara instan.</p>
+                </div>
+                <div class="p-3 rounded-2xl bg-[#14181d] border godot-border">
+                    <div class="font-bold text-emerald-300">3. Penyimpanan Aset Lokal (res://)</div>
+                    <p class="text-slate-400 mt-0.5">Mengizinkan impor gambar karakter/sprite dari galeri HP ke workspace <code class="text-sky-300">res://</code>.</p>
+                </div>
+            </div>
+
+            <label class="flex items-center gap-2.5 text-xs text-slate-300 cursor-pointer select-none pt-1">
+                <input type="checkbox" id="engine-remember-perm" checked class="w-4 h-4 rounded accent-[#478cbf]">
+                <span>Ingat izin di perangkat ini</span>
+            </label>
+
+            <div class="flex gap-2.5 pt-1">
+                <button type="button" onclick="closeEnginePermModal()" class="flex-1 py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 text-xs sm:text-sm font-semibold text-slate-200 transition">Batal</button>
+                <button type="button" onclick="grantEnginePermission()" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#478cbf] to-amber-500 hover:brightness-110 text-xs sm:text-sm font-extrabold text-slate-950 shadow-lg transition">Izinkan &amp; Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KONFIRMASI RESET CHAT BARU (PENGGANTI confirm()) -->
+    <div id="reset-chat-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-white/15 rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+            <h3 class="text-base font-bold text-white text-center">Mulai Chat Baru?</h3>
+            <p class="text-xs text-slate-400 text-center leading-relaxed">Riwayat obrolan saat ini akan dibersihkan agar R. Naomi AI memulai percakapan baru.</p>
+            <div class="flex gap-2.5">
+                <button type="button" onclick="closeResetModal()" class="flex-1 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-semibold text-slate-200">Batal</button>
+                <button type="button" onclick="confirmResetChat()" class="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-bold text-white">Mulai Baru</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS (PENGGANTI alert()) -->
+    <div id="toast-area" class="fixed bottom-20 right-3 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ========================================================================= -->
+    <!-- LOGIKA JAVASCRIPT UTAMA (ZERO NESTED BACKTICKS, SAFE INITIALIZATION)      -->
+    <!-- ========================================================================= -->
+    <script>
+        const apiKey = "";
+        const MODEL_PRIMARY = "gemini-2.5-flash";
+        const MODEL_FALLBACK = "gemini-3-flash-preview";
+
+        const LS_CHAT_HISTORY = "rnaomi_hist_v3";
+        const LS_CHAT_LEVEL = "rnaomi_lvl_v3";
+        const LS_WEB_ON = "rnaomi_web_v3";
+        const LS_VIDEO_HIST = "rnaomi_vid_v3";
+        const LS_ENGINE_PERM = "rnaomi_e5_perm_v3";
+
+        let activeMode = "chat";
+        let aiLevel = "auto";
+        let webSearchEnabled = true;
+        let messages = [];
+        let chatSending = false;
+
+        const LEVEL_CONFIGS = {
+            auto: {
+                tag: "Auto",
+                badge: "✨ Naomi Otomatis (Adaptif)",
+                desc: "Mode adaptif aktif: otomatis menyesuaikan nada bicara & kedalaman analisis dengan kebutuhanmu—hangat saat ngobrol, lugas saat teknis.",
+                temp: 0.85,
+                sys: [
+                    "Kamu adalah R. Naomi AI (Mode Naomi Otomatis).",
+                    "Adaptasikan gaya bicara, nada, dan kedalaman penjelasanmu secara otomatis mengikuti kebutuhan pengguna.",
+                    "Jika pengguna bertanya santai, jawab hangat dan natural. Jika bertanya teknis, pelajaran, atau coding, berikan penjelasan terstruktur dan akurat.",
+                    "Selalu gunakan Bahasa Indonesia yang alami dan variatif."
+                ].join("\n")
+            },
+            lv2: {
+                tag: "Lv.2",
+                badge: "⚡ Naomi Lv.2 (Sigap • SMA+)",
+                desc: "Mode sigap aktif: respons lebih cepat, tajam, dan terstruktur dengan standar kemampuan setara pelajar SMA ke atas hingga kuliah awal.",
+                temp: 0.65,
+                sys: [
+                    "Kamu adalah R. Naomi AI (Mode Naomi Lv.2).",
+                    "Bersikaplah lebih sigap, fokus, lugas, dan sistematis.",
+                    "Seluruh kemampuan analisismu setara pelajar SMA ke atas hingga mahasiswa tingkat awal di semua mata pelajaran dan bidang teknis.",
+                    "Sajikan jawaban langsung ke inti dengan poin-poin terstruktur dan contoh jelas dalam Bahasa Indonesia."
+                ].join("\n")
+            },
+            lv3: {
+                tag: "Lv.3",
+                badge: "👑 Naomi Lv.3 (Pro • > S2)",
+                desc: "Mode kecerdasan puncak: profesional aktif, proaktif memberi insight lanjutan, dengan skill coding, arsitektur sistem, penyusunan konsep, dan matematika lanjut di atas S1/S2.",
+                temp: 0.55,
+                sys: [
+                    "Kamu adalah R. Naomi AI (Mode Naomi Lv.3 — Tingkat Profesional & Pakar > S2).",
+                    "Bersikaplah profesional aktif, tajam, dan proaktif memberikan insight strategis serta antisipasi edge-case.",
+                    "Kemampuan arsitektur perangkat lunak, coding berbagai bahasa, penyusunan konsep kompleks, dan matematika lanjutmu berada di atas lulusan S1/S2.",
+                    "Berikan solusi bersih, optimal, mendalam, beserta rekomendasi langkah lanjutan dalam Bahasa Indonesia."
+                ].join("\n")
+            }
+        };
+
+        // Fungsi Jam & Tanggal Real-Time (Dipanggil segera agar tidak pernah --:--)
+        function updateClock() {
+            try {
+                const now = new Date();
+                const clockStr = now.toLocaleTimeString("id-ID", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                });
+                const dateStr = now.toLocaleDateString("id-ID", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short"
+                });
+                const cEl = document.getElementById("live-clock");
+                const dEl = document.getElementById("live-date");
+                if (cEl) cEl.textContent = clockStr;
+                if (dEl) dEl.textContent = dateStr;
+            } catch (e) {}
+        }
+
+        function getDeviceTimePrompt() {
+            const now = new Date();
+            const fullDate = now.toLocaleDateString("id-ID", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+            const fullTime = now.toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Makassar";
+            return "[WAKTU & KALENDER REAL-TIME PERANGKAT: " + fullDate + ", pukul " + fullTime + " (" + tz + ")]";
+        }
+
+        // Inisialisasi Aman Saat Halaman Dimuat
+        window.addEventListener("DOMContentLoaded", function () {
+            try {
+                updateClock();
+                setInterval(updateClock, 1000);
+                setupMarkdown();
+                initChatModule();
+                initVideoModule();
+                initEngineModule();
+            } catch (err) {
+                console.error("Init error:", err);
+            }
+        });
+
+        // =========================================================================
+        // NAVIGASI 3 MODE UTAMA (CHAT AI | VIDEO 30S | ENGINE 5)
+        // =========================================================================
+        function switchMode(mode) {
+            if (mode === "engine" && !isEngineAuthorized()) {
+                openEnginePermModal();
+                return;
+            }
+            activeMode = mode;
+
+            const vChat = document.getElementById("view-chat");
+            const vVideo = document.getElementById("view-video");
+            const vEngine = document.getElementById("view-engine");
+            const subBar = document.getElementById("chat-subbar");
+
+            const tChat = document.getElementById("tab-mode-chat");
+            const tVideo = document.getElementById("tab-mode-video");
+            const tEngine = document.getElementById("tab-mode-engine");
+
+            vChat.style.display = "none";
+            vVideo.style.display = "none";
+            vEngine.style.display = "none";
+            vVideo.classList.add("hidden");
+            vEngine.classList.add("hidden");
+
+            const baseTab = "px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold text-slate-400 hover:text-white whitespace-nowrap transition";
+            tChat.className = baseTab;
+            tVideo.className = baseTab;
+            tEngine.className = baseTab;
+
+            if (mode !== "video") pauseVideoPlayback();
+            if (mode !== "engine") engineStopGame(true);
+
+            if (mode === "chat") {
+                vChat.style.display = "flex";
+                if (subBar) subBar.classList.remove("hidden");
+                tChat.className = "px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold bg-violet-600 text-white shadow-sm whitespace-nowrap transition";
+            } else if (mode === "video") {
+                vVideo.classList.remove("hidden");
+                vVideo.style.display = "block";
+                if (subBar) subBar.classList.add("hidden");
+                tVideo.className = "px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white shadow-sm whitespace-nowrap transition";
+            } else if (mode === "engine") {
+                vEngine.classList.remove("hidden");
+                vEngine.style.display = "flex";
+                if (subBar) subBar.classList.add("hidden");
+                tEngine.className = "px-2 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold bg-gradient-to-r from-[#478cbf] to-amber-500 text-slate-950 shadow-sm whitespace-nowrap transition";
+                drawEngineViewport();
+            }
+        }
+
+        // =========================================================================
+        // MODUL 1: CHAT AI (3 TINGKAT KECERDASAN + LIVE WEB & WAKTU)
+        // =========================================================================
+        function setupMarkdown() {
+            if (typeof marked === "undefined") return;
+            const renderer = new marked.Renderer();
+            renderer.code = function (codeInput, langInput) {
+                const rawCode = typeof codeInput === "object" ? (codeInput.text || "") : String(codeInput || "");
+                const lang = (typeof codeInput === "object" ? codeInput.lang : langInput) || "code";
+                const cid = "code-" + Math.random().toString(36).slice(2, 9);
+                return (
+                    '<div class="code-block-wrapper">' +
+                    '<div class="code-block-header">' +
+                    '<span>' + escapeHtml(lang) + '</span>' +
+                    '<button type="button" onclick="copyCodeById(\'' + cid + '\', this)" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-[10px] font-semibold">Salin Kode</button>' +
+                    '</div>' +
+                    '<pre><code id="' + cid + '">' + escapeHtml(rawCode) + '</code></pre>' +
+                    '</div>'
+                );
+            };
+            marked.setOptions({ renderer: renderer, breaks: true, gfm: true });
+        }
+
+        function initChatModule() {
+            try {
+                const savedLvl = localStorage.getItem(LS_CHAT_LEVEL);
+                if (savedLvl && LEVEL_CONFIGS[savedLvl]) aiLevel = savedLvl;
+                setAiLevel(aiLevel, true);
+
+                const savedWeb = localStorage.getItem(LS_WEB_ON);
+                if (savedWeb !== null) webSearchEnabled = savedWeb === "true";
+                refreshWebButtons();
+
+                const rawHist = localStorage.getItem(LS_CHAT_HISTORY);
+                if (rawHist) {
+                    const parsed = JSON.parse(rawHist);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        messages = parsed;
+                        document.getElementById("chat-welcome").classList.add("hidden");
+                        const list = document.getElementById("chat-messages");
+                        list.classList.remove("hidden");
+                        messages.forEach(function (m) {
+                            renderChatBubble(m.role, m.text, m.time, m.level || aiLevel, m.sources || [], false);
+                        });
+                        scrollChatToBottom();
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function setAiLevel(lvl, silent) {
+            if (!LEVEL_CONFIGS[lvl]) return;
+            aiLevel = lvl;
+            try { localStorage.setItem(LS_CHAT_LEVEL, lvl); } catch (e) {}
+
+            const cfg = LEVEL_CONFIGS[lvl];
+            const wBadge = document.getElementById("welcome-badge");
+            const wDesc = document.getElementById("welcome-desc");
+            if (wBadge) wBadge.textContent = cfg.badge;
+            if (wDesc) wDesc.textContent = cfg.desc;
+
+            ["auto", "lv2", "lv3"].forEach(function (key) {
+                const btn = document.getElementById("btn-lvl-" + key);
+                if (!btn) return;
+                if (key === lvl) {
+                    const styles = {
+                        auto: "px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold bg-violet-600 text-white shadow-sm whitespace-nowrap transition",
+                        lv2: "px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold bg-cyan-600 text-white shadow-sm whitespace-nowrap transition",
+                        lv3: "px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold bg-amber-500 text-slate-950 shadow-sm whitespace-nowrap transition"
+                    };
+                    btn.className = styles[key];
+                } else {
+                    btn.className = "px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 whitespace-nowrap transition";
+                }
+            });
+            if (!silent) showToast("Mode: " + cfg.badge);
+        }
+
+        function toggleWebSearch() {
+            webSearchEnabled = !webSearchEnabled;
+            try { localStorage.setItem(LS_WEB_ON, String(webSearchEnabled)); } catch (e) {}
+            refreshWebButtons();
+            showToast(webSearchEnabled ? "Akses Web Real-Time: AKTIF" : "Akses Web: NONAKTIF");
+        }
+
+        function refreshWebButtons() {
+            const btn = document.getElementById("btn-web-toggle");
+            const hBadge = document.getElementById("header-web-badge");
+            const hDot = document.getElementById("header-web-dot");
+            if (btn) {
+                btn.className = webSearchEnabled
+                    ? "px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-[11px] font-bold text-emerald-300 whitespace-nowrap transition"
+                    : "px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-semibold text-slate-400 whitespace-nowrap transition";
+                btn.textContent = webSearchEnabled ? "🌐 Web: ON" : "🌐 Web: OFF";
+            }
+            if (hBadge && hDot) {
+                hBadge.className = webSearchEnabled
+                    ? "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-[9px] sm:text-[10px] font-bold text-emerald-300 shrink-0"
+                    : "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/5 border border-white/15 text-[9px] sm:text-[10px] font-semibold text-slate-400 shrink-0";
+                hDot.className = webSearchEnabled
+                    ? "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"
+                    : "w-1.5 h-1.5 rounded-full bg-slate-500";
+            }
+        }
+
+        function quickAskWithLevel(lvl, text) {
+            setAiLevel(lvl, true);
+            sendChatPreset(text);
+        }
+
+        function sendChatPreset(text) {
+            if (chatSending) return;
+            const input = document.getElementById("chat-input");
+            if (input) {
+                input.value = text;
+                resizeChatBox(input);
+            }
+            onChatFormSubmit();
+        }
+
+        function fillChatInput(prefix) {
+            const input = document.getElementById("chat-input");
+            if (!input) return;
+            input.value = prefix;
+            resizeChatBox(input);
+            input.focus();
+        }
+
+        function resizeChatBox(el) {
+            el.style.height = "auto";
+            el.style.height = Math.min(el.scrollHeight, 128) + "px";
+        }
+
+        function onChatKeyDown(e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                if (!chatSending) onChatFormSubmit();
+            }
+        }
+
+        async function onChatFormSubmit(e) {
+            if (e) e.preventDefault();
+            if (chatSending) return;
+
+            const input = document.getElementById("chat-input");
+            const text = input ? input.value.trim() : "";
+            if (!text) return;
+
+            // Slash command /video
+            if (text.toLowerCase().indexOf("/video ") === 0) {
+                const idea = text.slice(7).trim();
+                input.value = "";
+                input.style.height = "auto";
+                switchMode("video");
+                const vp = document.getElementById("video-prompt");
+                if (vp) vp.value = idea;
+                if (idea) generateVideo30s();
+                return;
+            }
+
+            input.value = "";
+            input.style.height = "auto";
+
+            document.getElementById("chat-welcome").classList.add("hidden");
+            const list = document.getElementById("chat-messages");
+            list.classList.remove("hidden");
+
+            const nowStr = shortClock();
+            messages.push({ role: "user", text: text, time: nowStr, level: aiLevel });
+            renderChatBubble("user", text, nowStr, aiLevel, [], true);
+            saveMessages();
+
+            chatSending = true;
+            const btn = document.getElementById("chat-submit-btn");
+            if (btn) btn.disabled = true;
+            const thinkId = appendThinkingBubble();
+
+            try {
+                const res = await fetchGeminiChat();
+                removeElementById(thinkId);
+                const rTime = shortClock();
+                messages.push({ role: "model", text: res.text, time: rTime, level: aiLevel, sources: res.sources });
+                renderChatBubble("model", res.text, rTime, aiLevel, res.sources, true);
+                saveMessages();
+            } catch (err) {
+                removeElementById(thinkId);
+                renderChatBubble(
+                    "model",
+                    "Maaf, koneksi ke server R. Naomi AI sedang sibuk. Silakan kirim ulang pesanmu.",
+                    shortClock(),
+                    aiLevel,
+                    [],
+                    true
+                );
+                showToast("Koneksi server AI terganggu", "error");
+            } finally {
+                chatSending = false;
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        async function fetchGeminiChat() {
+            const cfg = LEVEL_CONFIGS[aiLevel];
+            const webDirective = webSearchEnabled
+                ? "Pencarian Google Search real-time AKTIF. Gunakan informasi web terkini jika pengguna menanyakan berita terbaru, kejadian hari ini, harga, cuaca, atau fakta aktual."
+                : "Gunakan penalaran dan konteks waktu real-time perangkat.";
+            const sysPrompt = getDeviceTimePrompt() + "\n" + webDirective + "\n\n" + cfg.sys;
+
+            const payloadContents = messages.slice(-14).map(function (m) {
+                return {
+                    role: m.role === "user" ? "user" : "model",
+                    parts: [{ text: m.text }]
+                };
+            });
+
+            const plan = webSearchEnabled
+                ? [
+                    { model: MODEL_PRIMARY, search: true },
+                    { model: MODEL_PRIMARY, search: false },
+                    { model: MODEL_FALLBACK, search: false }
+                  ]
+                : [
+                    { model: MODEL_PRIMARY, search: false },
+                    { model: MODEL_FALLBACK, search: false }
+                  ];
+
+            let lastError = null;
+            for (let i = 0; i < plan.length; i++) {
+                const step = plan[i];
+                const endpoint = "https://generativelanguage.googleapis.com/v1beta/models/" + step.model + ":generateContent?key=" + apiKey;
+                const bodyObj = {
+                    contents: payloadContents,
+                    systemInstruction: { parts: [{ text: sysPrompt }] },
+                    generationConfig: {
+                        temperature: cfg.temp,
+                        topP: 0.95,
+                        maxOutputTokens: 2048
+                    }
+                };
+                if (step.search) {
+                    bodyObj.tools = [{ google_search: {} }];
+                }
+
+                try {
+                    const resp = await fetch(endpoint, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(bodyObj)
+                    });
+                    if (!resp.ok) throw new Error("HTTP " + resp.status);
+                    const json = await resp.json();
+                    const cand = json && json.candidates && json.candidates[0];
+                    const parts = (cand && cand.content && cand.content.parts) || [];
+                    const fullText = parts.map(function (p) { return p.text || ""; }).join("").trim();
+                    if (!fullText) throw new Error("Empty response");
+
+                    const sources = extractWebSources(cand && cand.groundingMetadata);
+                    return { text: fullText, sources: sources };
+                } catch (e) {
+                    lastError = e;
+                }
+            }
+            throw lastError || new Error("API failed");
+        }
+
+        function extractWebSources(meta) {
+            if (!meta) return [];
+            const seen = {};
+            const out = [];
+            const chunks = Array.isArray(meta.groundingChunks) ? meta.groundingChunks : [];
+            chunks.forEach(function (c) {
+                const uri = c && c.web && c.web.uri;
+                const title = c && c.web && c.web.title;
+                if (uri && !seen[uri]) {
+                    seen[uri] = true;
+                    out.push({ uri: uri, title: title || "Sumber Web" });
+                }
+            });
+            return out.slice(0, 5);
+        }
+
+        function renderChatBubble(role, text, time, lvlKey, sources, animate) {
+            const list = document.getElementById("chat-messages");
+            const wrap = document.createElement("div");
+            const cfg = LEVEL_CONFIGS[lvlKey] || LEVEL_CONFIGS.auto;
+
+            if (role === "user") {
+                wrap.className = "flex justify-end " + (animate ? "animate-fade-up" : "");
+                wrap.innerHTML =
+                    '<div class="max-w-[85%] sm:max-w-[75%] space-y-1">' +
+                    '<div class="bg-gradient-to-br from-violet-600 to-indigo-600 text-white px-4 py-3 rounded-2xl rounded-tr-sm shadow-lg text-sm leading-relaxed whitespace-pre-wrap break-words">' +
+                    escapeHtml(text) +
+                    '</div>' +
+                    '<div class="text-[10px] text-slate-500 text-right pr-1">' + escapeHtml(time) + '</div>' +
+                    '</div>';
+            } else {
+                const rawId = "raw-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6);
+                const htmlContent = typeof marked !== "undefined" ? marked.parse(text) : escapeHtml(text);
+
+                let sourcesHtml = "";
+                if (Array.isArray(sources) && sources.length > 0) {
+                    const links = sources.map(function (s) {
+                        return '<a href="' + escapeHtml(s.uri) + '" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-[11px] text-emerald-200 max-w-[210px] truncate">' +
+                            '<span>🔗</span><span class="truncate">' + escapeHtml(s.title) + '</span></a>';
+                    }).join("");
+                    sourcesHtml =
+                        '<div class="mt-3 pt-2.5 border-t border-white/10 space-y-1.5">' +
+                        '<div class="text-[10px] font-bold text-emerald-300">🌐 Sumber Referensi Web:</div>' +
+                        '<div class="flex flex-wrap gap-1.5">' + links + '</div>' +
+                        '</div>';
+                }
+
+                wrap.className = "flex gap-2.5 justify-start " + (animate ? "animate-fade-up" : "");
+                wrap.innerHTML =
+                    '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shrink-0 mt-0.5">RN</div>' +
+                    '<div class="max-w-[88%] sm:max-w-[80%] min-w-0 space-y-1">' +
+                    '<div class="flex items-center gap-2 text-[11px]">' +
+                    '<span class="font-bold text-slate-200">R. Naomi AI</span>' +
+                    '<span class="px-2 py-0.5 rounded-full bg-white/10 text-violet-300 text-[10px] font-semibold">' + escapeHtml(cfg.tag) + '</span>' +
+                    '<span class="text-slate-500 text-[10px]">' + escapeHtml(time) + '</span>' +
+                    '</div>' +
+                    '<div class="glass-bubble-ai px-4 py-3 rounded-2xl rounded-tl-sm shadow-xl">' +
+                    '<div class="markdown-body text-sm text-slate-200 break-words">' + htmlContent + '</div>' +
+                    sourcesHtml +
+                    '<textarea id="' + rawId + '" class="hidden">' + escapeHtml(text) + '</textarea>' +
+                    '<div class="mt-2.5 pt-2 border-t border-white/5 flex justify-end">' +
+                    '<button type="button" onclick="copyFromTextarea(\'' + rawId + '\', this)" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] font-medium text-slate-400 hover:text-white transition">Salin Balasan</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            }
+
+            list.appendChild(wrap);
+            scrollChatToBottom();
+        }
+
+        function appendThinkingBubble() {
+            const list = document.getElementById("chat-messages");
+            const id = "think-" + Date.now();
+            const el = document.createElement("div");
+            el.id = id;
+            el.className = "flex gap-2.5 justify-start animate-fade-up";
+            el.innerHTML =
+                '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shrink-0">RN</div>' +
+                '<div class="glass-bubble-ai px-4 py-3 rounded-2xl rounded-tl-sm flex items-center gap-2.5">' +
+                '<div class="flex gap-1">' +
+                '<span class="w-2 h-2 rounded-full bg-violet-400 thinking-dot"></span>' +
+                '<span class="w-2 h-2 rounded-full bg-cyan-400 thinking-dot"></span>' +
+                '<span class="w-2 h-2 rounded-full bg-amber-400 thinking-dot"></span>' +
+                '</div>' +
+                '<span class="text-xs text-slate-300">Naomi sedang menyusun jawaban...</span>' +
+                '</div>';
+            list.appendChild(el);
+            scrollChatToBottom();
+            return id;
+        }
+
+        function scrollChatToBottom() {
+            const box = document.getElementById("chat-scroll");
+            if (box) box.scrollTop = box.scrollHeight;
+        }
+
+        function saveMessages() {
+            try { localStorage.setItem(LS_CHAT_HISTORY, JSON.stringify(messages.slice(-36))); } catch (e) {}
+        }
+
+        function openResetModal() {
+            const m = document.getElementById("reset-chat-modal");
+            if (m) { m.classList.remove("hidden"); m.classList.add("flex"); }
+        }
+        function closeResetModal() {
+            const m = document.getElementById("reset-chat-modal");
+            if (m) { m.classList.add("hidden"); m.classList.remove("flex"); }
+        }
+        function confirmResetChat() {
+            messages = [];
+            try { localStorage.removeItem(LS_CHAT_HISTORY); } catch (e) {}
+            document.getElementById("chat-messages").innerHTML = "";
+            document.getElementById("chat-messages").classList.add("hidden");
+            document.getElementById("chat-welcome").classList.remove("hidden");
+            closeResetModal();
+            showToast("Chat baru siap!");
+        }
+
+        // =========================================================================
+        // MODUL 2: STUDIO VIDEO AI 30 DETIK (5 ADEGAN × 6s + AUDIO SYNTH)
+        // =========================================================================
+        let vidStyle = "Anime Studio";
+        let vidAspect = "9:16";
+        let vidProject = null;
+        let vidHistory = [];
+        let vidTime = 0;
+        let vidPlaying = false;
+        let vidRaf = null;
+        let vidLastNow = 0;
+        let vidAudioOn = true;
+        let vidParticles = [];
+        let vidRecording = false;
+        let vidCancelRec = false;
+        let vidMediaRecorder = null;
+
+        let audioCtx = null;
+        let synthOscs = [];
+        let synthInterval = null;
+        let synthMasterGain = null;
+        let synthRecDest = null;
+
+        const RANDOM_VID_IDEAS = [
+            "Ksatria cahaya bertarung melawan naga bayangan di puncak kuil melayang saat hujan meteor ungu turun di langit malam",
+            "Kota Jakarta tahun 2099 bergaya cyberpunk saat hujan neon malam hari dengan kereta melayang menembus awan",
+            "Penjelajah luar angkasa berjalan di planet kristal biru dengan dua bulan raksasa dan aurora kosmik",
+            "Kastil fantasi di atas awan dengan air terjun raksasa dan burung phoenix api terbang melintasi senja",
+            "Fakta sains menakjubkan tentang lubang hitam raksasa dan relativitas waktu di pusat galaksi"
+        ];
+
+        function initVideoModule() {
+            try {
+                const raw = localStorage.getItem(LS_VIDEO_HIST);
+                if (raw) {
+                    const arr = JSON.parse(raw);
+                    if (Array.isArray(arr)) {
+                        vidHistory = arr;
+                        renderVideoHistory();
+                    }
+                }
+            } catch (e) {}
+
+            const tl = document.getElementById("vp-timeline");
+            if (!tl) return;
+            let scrub = false;
+            function updateScrub(cx) {
+                if (!vidProject) return;
+                const rect = tl.getBoundingClientRect();
+                const ratio = Math.max(0, Math.min(1, (cx - rect.left) / rect.width));
+                vidTime = ratio * 30.0;
+                renderVideoCanvasFrame(vidTime);
+            }
+            tl.addEventListener("pointerdown", function (e) { scrub = true; updateScrub(e.clientX); });
+            window.addEventListener("pointermove", function (e) { if (scrub) updateScrub(e.clientX); });
+            window.addEventListener("pointerup", function () { scrub = false; });
+        }
+
+        function randomizeVideoIdea() {
+            const box = document.getElementById("video-prompt");
+            if (box) box.value = RANDOM_VID_IDEAS[Math.floor(Math.random() * RANDOM_VID_IDEAS.length)];
+        }
+
+        function selectVideoStyle(s) {
+            vidStyle = s;
+            document.querySelectorAll(".vid-style-btn").forEach(function (btn) {
+                const active = btn.getAttribute("data-style") === s;
+                btn.className = active
+                    ? "vid-style-btn p-2.5 rounded-xl border border-fuchsia-500/60 bg-fuchsia-500/15 text-left text-xs font-bold text-white transition"
+                    : "vid-style-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-left text-xs font-semibold text-slate-300 transition";
+            });
+        }
+
+        function selectVideoAspect(a) {
+            vidAspect = a;
+            document.querySelectorAll(".vid-aspect-btn").forEach(function (btn) {
+                const active = btn.getAttribute("data-aspect") === a;
+                btn.className = active
+                    ? "vid-aspect-btn p-2.5 rounded-xl border border-cyan-500/60 bg-cyan-500/15 text-center text-xs font-bold text-white transition"
+                    : "vid-aspect-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-center text-xs font-semibold text-slate-300 transition";
+            });
+        }
+
+        async function generateVideo30s() {
+            const box = document.getElementById("video-prompt");
+            const idea = box ? box.value.trim() : "";
+            if (!idea) {
+                showToast("Tulis ide video dulu atau klik Acak Ide!", "error");
+                return;
+            }
+
+            const btn = document.getElementById("video-generate-btn");
+            const pBox = document.getElementById("video-gen-progress");
+            const pTxt = document.getElementById("video-gen-text");
+            const pPct = document.getElementById("video-gen-pct");
+            const pBar = document.getElementById("video-gen-bar");
+
+            if (btn) btn.disabled = true;
+            if (pBox) pBox.classList.remove("hidden");
+            if (pTxt) pTxt.textContent = "Sutradara AI merancang 5 adegan (total 30 detik)...";
+            if (pPct) pPct.textContent = "40%";
+            if (pBar) pBar.style.width = "40%";
+
+            try {
+                const sb = await fetchVideoStoryboard(idea, vidStyle);
+                if (pTxt) pTxt.textContent = "Merender kanvas 30 FPS & audio latar synth...";
+                if (pPct) pPct.textContent = "88%";
+                if (pBar) pBar.style.width = "88%";
+                await new Promise(function (r) { setTimeout(r, 250); });
+
+                vidProject = {
+                    id: "vid-" + Date.now(),
+                    title: sb.title || idea.slice(0, 44),
+                    style: vidStyle,
+                    aspect: vidAspect,
+                    scenes: sb.scenes
+                };
+
+                vidHistory.unshift(vidProject);
+                vidHistory = vidHistory.slice(0, 8);
+                try { localStorage.setItem(LS_VIDEO_HIST, JSON.stringify(vidHistory)); } catch (e) {}
+                renderVideoHistory();
+
+                loadVideoPlayer(vidProject);
+                showToast("Video AI 30 Detik siap diputar!");
+            } catch (e) {
+                showToast("Gagal membuat video.", "error");
+            } finally {
+                if (btn) btn.disabled = false;
+                if (pBox) pBox.classList.add("hidden");
+            }
+        }
+
+        async function fetchVideoStoryboard(idea, style) {
+            const prompt = [
+                "Buat storyboard video berdurasi TEPAT 30 DETIK (5 adegan berurutan x 6 detik) dalam format JSON.",
+                "Ide: " + idea,
+                "Gaya Visual: " + style,
+                "Kembalikan JSON dengan 'title' (judul singkat) dan 'scenes' (array 5 objek).",
+                "Tiap objek adegan memiliki: 'sceneNumber' (1..5), 'cameraMotion' ('zoom-in', 'zoom-out', 'pan-left', 'pan-right', 'dramatic-pulse'), 'palette' (array 3 warna HEX gelap-bercahaya), 'particles' ('sparks', 'rain', 'stars', 'sakura', 'cyber-grid'), dan 'subtitle' (narasi Bahasa Indonesia singkat max 85 karakter)."
+            ].join("\n");
+
+            const body = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            title: { type: "STRING" },
+                            scenes: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        sceneNumber: { type: "INTEGER" },
+                                        cameraMotion: { type: "STRING" },
+                                        palette: { type: "ARRAY", items: { type: "STRING" } },
+                                        particles: { type: "STRING" },
+                                        subtitle: { type: "STRING" }
+                                    },
+                                    required: ["sceneNumber", "cameraMotion", "palette", "particles", "subtitle"]
+                                }
+                            }
+                        },
+                        required: ["title", "scenes"]
+                    }
+                }
+            };
+
+            try {
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL_PRIMARY + ":generateContent?key=" + apiKey;
+                const resp = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+                if (!resp.ok) throw new Error("HTTP " + resp.status);
+                const data = await resp.json();
+                const raw = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text;
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed.scenes) && parsed.scenes.length >= 5) {
+                    parsed.scenes = parsed.scenes.slice(0, 5);
+                    return parsed;
+                }
+            } catch (e) {}
+
+            // Fallback lokal agar selalu berjalan mulus
+            const palMap = {
+                "Anime Studio": ["#130d2e", "#7c3aed", "#f472b6"],
+                "Sinematik 4K": ["#090d16", "#1e3a8a", "#f59e0b"],
+                "3D Fantasy Game": ["#081c24", "#0d9488", "#a855f7"],
+                "Cyberpunk Neon": ["#070514", "#db2777", "#06b6d4"],
+                "Misteri Gelap": ["#05070d", "#1e293b", "#6366f1"],
+                "Edukasi & Konten": ["#091526", "#2563eb", "#38bdf8"]
+            };
+            const pal = palMap[style] || ["#0b1020", "#6d28d9", "#22d3ee"];
+            const motions = ["zoom-in", "pan-right", "dramatic-pulse", "pan-left", "zoom-out"];
+            const pKind = style === "Anime Studio" ? "sakura" : (style === "Cyberpunk Neon" ? "cyber-grid" : (style === "Misteri Gelap" ? "rain" : "sparks"));
+
+            return {
+                title: idea.slice(0, 44),
+                scenes: [0, 1, 2, 3, 4].map(function (i) {
+                    return {
+                        sceneNumber: i + 1,
+                        cameraMotion: motions[i],
+                        palette: pal,
+                        particles: pKind,
+                        subtitle: [
+                            "Adegan 1: " + idea.slice(0, 62) + "...",
+                            "Adegan 2: Suasana sinematik mulai terbangun.",
+                            "Adegan 3: Puncak ketegangan dan cahaya memukau.",
+                            "Adegan 4: Energi kosmik menyelimuti seluruh ruang.",
+                            "Adegan 5: Penutup epik yang membekas."
+                        ][i]
+                    };
+                })
+            };
+        }
+
+        function renderVideoHistory() {
+            const sec = document.getElementById("video-history-section");
+            const list = document.getElementById("video-history-list");
+            if (!sec || !list) return;
+            if (vidHistory.length === 0) {
+                sec.classList.add("hidden");
+                return;
+            }
+            sec.classList.remove("hidden");
+            list.innerHTML = vidHistory.map(function (item, idx) {
+                return (
+                    '<button type="button" onclick="loadVideoFromHistory(' + idx + ')" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-violet-500/15 border border-white/10 text-left space-y-1 transition">' +
+                    '<div class="text-[10px] font-mono text-fuchsia-300">' + escapeHtml(item.style) + ' • ' + escapeHtml(item.aspect) + ' • 30s</div>' +
+                    '<div class="text-xs font-bold text-white truncate">' + escapeHtml(item.title) + '</div>' +
+                    '</button>'
+                );
+            }).join("");
+        }
+
+        function loadVideoFromHistory(idx) {
+            if (vidHistory[idx]) {
+                vidProject = vidHistory[idx];
+                loadVideoPlayer(vidProject);
+            }
+        }
+
+        function loadVideoPlayer(proj) {
+            const sec = document.getElementById("video-player-section");
+            if (sec) sec.classList.remove("hidden");
+            document.getElementById("vp-style-badge").textContent = proj.style;
+            document.getElementById("vp-aspect-badge").textContent = proj.aspect;
+            document.getElementById("vp-title").textContent = proj.title;
+
+            const canvas = document.getElementById("video-canvas");
+            if (proj.aspect === "16:9") { canvas.width = 960; canvas.height = 540; }
+            else if (proj.aspect === "1:1") { canvas.width = 720; canvas.height = 720; }
+            else { canvas.width = 540; canvas.height = 960; }
+
+            vidParticles = [];
+            for (let i = 0; i < 68; i++) {
+                vidParticles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: 1.5 + Math.random() * 3,
+                    sp: 35 + Math.random() * 85,
+                    ph: Math.random() * 6.28
+                });
+            }
+
+            const grid = document.getElementById("vp-scenes-list");
+            if (grid) {
+                grid.innerHTML = proj.scenes.map(function (sc, idx) {
+                    const t0 = idx * 6;
+                    const t1 = (idx + 1) * 6;
+                    return (
+                        '<button type="button" onclick="seekVideoTo(' + (t0 + 0.05) + ')" class="p-2.5 rounded-xl bg-white/[0.04] hover:bg-violet-500/20 border border-white/10 text-left space-y-1 transition">' +
+                        '<div class="text-[10px] font-mono text-fuchsia-300 font-bold">Adegan ' + (idx + 1) + ' (00:' + String(t0).padStart(2, "0") + '-00:' + String(t1).padStart(2, "0") + ')</div>' +
+                        '<div class="text-[11px] text-slate-200 line-clamp-2">' + escapeHtml(sc.subtitle) + '</div>' +
+                        '</button>'
+                    );
+                }).join("");
+            }
+
+            vidTime = 0;
+            startVideoPlayback();
+        }
+
+        function startVideoPlayback() {
+            if (!vidProject) return;
+            if (vidTime >= 30.0) vidTime = 0;
+            vidPlaying = true;
+            vidLastNow = performance.now();
+            const btn = document.getElementById("vp-play-btn");
+            if (btn) btn.textContent = "⏸ Jeda";
+            if (vidAudioOn) startSynthAudio(vidProject.style);
+            if (vidRaf) cancelAnimationFrame(vidRaf);
+            vidRaf = requestAnimationFrame(tickVideoPlayback);
+        }
+
+        function pauseVideoPlayback() {
+            vidPlaying = false;
+            const btn = document.getElementById("vp-play-btn");
+            if (btn) btn.textContent = "▶ Putar";
+            stopSynthAudio();
+            if (vidRaf) { cancelAnimationFrame(vidRaf); vidRaf = null; }
+        }
+
+        function toggleVideoPlayback() {
+            if (vidPlaying) pauseVideoPlayback();
+            else startVideoPlayback();
+        }
+
+        function restartVideoPlayback() {
+            vidTime = 0;
+            startVideoPlayback();
+        }
+
+        function seekVideoTo(sec) {
+            vidTime = Math.max(0, Math.min(30.0, sec));
+            renderVideoCanvasFrame(vidTime);
+        }
+
+        function toggleVideoMute() {
+            vidAudioOn = !vidAudioOn;
+            const btn = document.getElementById("vp-mute-btn");
+            if (btn) btn.textContent = vidAudioOn ? "🔊 Audio Synth: ON" : "🔇 Audio Synth: OFF";
+            if (vidAudioOn && vidPlaying && vidProject) startSynthAudio(vidProject.style);
+            else stopSynthAudio();
+        }
+
+        function tickVideoPlayback(now) {
+            if (!vidPlaying || !vidProject) return;
+            const dt = Math.min(0.1, (now - vidLastNow) / 1000);
+            vidLastNow = now;
+            vidTime += dt;
+            if (vidTime >= 30.0) {
+                vidTime = 30.0;
+                renderVideoCanvasFrame(30.0);
+                if (!vidRecording) pauseVideoPlayback();
+                return;
+            }
+            renderVideoCanvasFrame(vidTime);
+            vidRaf = requestAnimationFrame(tickVideoPlayback);
+        }
+
+        function renderVideoCanvasFrame(t) {
+            if (!vidProject) return;
+            const canvas = document.getElementById("video-canvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const w = canvas.width;
+            const h = canvas.height;
+
+            const idx = Math.min(4, Math.floor(t / 6.0));
+            const localT = t - idx * 6.0;
+            const prog = Math.max(0, Math.min(1, localT / 6.0));
+            const sc = vidProject.scenes[idx];
+            const pal = Array.isArray(sc.palette) && sc.palette.length >= 3 ? sc.palette : ["#0b1020", "#6d28d9", "#22d3ee"];
+
+            const fillEl = document.getElementById("vp-timeline-fill");
+            if (fillEl) fillEl.style.width = ((t / 30.0) * 100) + "%";
+            const curEl = document.getElementById("vp-time-cur");
+            if (curEl) curEl.textContent = "00:" + String(Math.floor(t)).padStart(2, "0");
+            const lblEl = document.getElementById("vp-scene-label");
+            if (lblEl) lblEl.textContent = "Adegan " + (idx + 1) + "/5 • " + sc.cameraMotion;
+
+            ctx.save();
+            ctx.clearRect(0, 0, w, h);
+
+            let scale = 1.0;
+            let dx = 0;
+            if (sc.cameraMotion === "zoom-in") scale = 1.0 + prog * 0.16;
+            else if (sc.cameraMotion === "zoom-out") scale = 1.16 - prog * 0.16;
+            else if (sc.cameraMotion === "pan-left") { scale = 1.12; dx = (0.5 - prog) * w * 0.08; }
+            else if (sc.cameraMotion === "pan-right") { scale = 1.12; dx = (prog - 0.5) * w * 0.08; }
+            else scale = 1.05 + Math.sin(prog * 9.42) * 0.04;
+
+            ctx.translate(w / 2 + dx, h / 2);
+            ctx.scale(scale, scale);
+            ctx.translate(-w / 2, -h / 2);
+
+            const grad = ctx.createLinearGradient(0, 0, w * 0.3, h);
+            grad.addColorStop(0, pal[0]);
+            grad.addColorStop(0.55, pal[1]);
+            grad.addColorStop(1, pal[2]);
+            ctx.fillStyle = grad;
+            ctx.fillRect(-30, -30, w + 60, h + 60);
+
+            const ox = w * (0.3 + ((idx * 0.15 + prog * 0.1) % 0.45));
+            const oy = h * 0.27;
+            const orad = Math.min(w, h) * 0.14;
+            const halo = ctx.createRadialGradient(ox, oy, orad * 0.1, ox, oy, orad * 2.5);
+            halo.addColorStop(0, "rgba(255,255,255,0.88)");
+            halo.addColorStop(0.4, pal[2]);
+            halo.addColorStop(1, "rgba(0,0,0,0)");
+            ctx.fillStyle = halo;
+            ctx.beginPath();
+            ctx.arc(ox, oy, orad * 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            const groundY = h * 0.77;
+            ctx.fillStyle = "rgba(5, 8, 16, 0.88)";
+            ctx.beginPath();
+            ctx.moveTo(-20, groundY);
+            for (let p = 0; p <= 6; p++) {
+                const px = -20 + p * ((w + 40) / 6);
+                const py = groundY - h * (0.12 + 0.1 * Math.abs(Math.sin(p * 1.7 + idx)));
+                ctx.lineTo(px, py);
+            }
+            ctx.lineTo(w + 20, groundY);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = "#04060c";
+            ctx.fillRect(-20, groundY, w + 40, h - groundY + 30);
+
+            for (let i = 0; i < vidParticles.length; i++) {
+                const pt = vidParticles[i];
+                const px = (pt.x + Math.sin(t * 1.5 + pt.ph) * 26 + t * 22) % w;
+                const py = sc.particles === "sparks"
+                    ? (h - ((pt.y + t * pt.sp) % h))
+                    : ((pt.y + t * pt.sp) % h);
+                ctx.fillStyle = sc.particles === "sakura" ? "rgba(249, 168, 212, 0.82)" : "rgba(255, 255, 255, 0.75)";
+                ctx.beginPath();
+                ctx.arc(px, py, pt.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
+
+            let fade = 0;
+            if (localT < 0.4) fade = 1 - localT / 0.4;
+            else if (localT > 5.6 && idx < 4) fade = (localT - 5.6) / 0.4;
+            if (fade > 0) {
+                ctx.fillStyle = "rgba(4, 6, 12, " + (fade * 0.85) + ")";
+                ctx.fillRect(0, 0, w, h);
+            }
+
+            const barH = Math.round(h * 0.06);
+            ctx.fillStyle = "rgba(4, 6, 12, 0.85)";
+            ctx.fillRect(0, 0, w, barH);
+            ctx.fillRect(0, h - barH, w, barH);
+
+            ctx.font = "700 " + Math.max(11, Math.round(w * 0.022)) + "px Inter, sans-serif";
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            ctx.fillText("R. NAOMI AI • ADEGAN " + (idx + 1) + "/5", 14, barH / 2);
+
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#67e8f9";
+            ctx.fillText("00:" + String(Math.floor(t)).padStart(2, "0") + " / 00:30", w - 14, barH / 2);
+
+            const subFont = Math.max(13, Math.round(w * 0.03));
+            ctx.font = "600 " + subFont + "px Inter, sans-serif";
+            const words = String(sc.subtitle || "").split(/\s+/);
+            const lines = [];
+            let line = "";
+            for (let wi = 0; wi < words.length; wi++) {
+                const test = line ? line + " " + words[wi] : words[wi];
+                if (ctx.measureText(test).width > w * 0.82 && line) {
+                    lines.push(line);
+                    line = words[wi];
+                } else {
+                    line = test;
+                }
+            }
+            if (line) lines.push(line);
+
+            const lh = subFont * 1.35;
+            const boxH = lines.length * lh + 18;
+            const boxW = w * 0.88;
+            const boxX = (w - boxW) / 2;
+            const boxY = h - barH - boxH - 18;
+
+            ctx.fillStyle = "rgba(6, 9, 18, 0.82)";
+            ctx.fillRect(boxX, boxY, boxW, boxH);
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.16)";
+            ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+            lines.forEach(function (ln, li) {
+                ctx.fillText(ln, w / 2, boxY + 9 + li * lh);
+            });
+        }
+
+        function startSynthAudio(style) {
+            stopSynthAudio();
+            try {
+                const ACtx = window.AudioContext || window.webkitAudioContext;
+                if (!ACtx) return;
+                if (!audioCtx) audioCtx = new ACtx();
+                if (audioCtx.state === "suspended") audioCtx.resume();
+
+                synthMasterGain = audioCtx.createGain();
+                synthMasterGain.gain.setValueAtTime(0.07, audioCtx.currentTime);
+                synthMasterGain.connect(audioCtx.destination);
+                if (synthRecDest) synthMasterGain.connect(synthRecDest);
+
+                const notes = style === "Cyberpunk Neon"
+                    ? [110, 130.8, 164.8, 220, 329.6]
+                    : [261.6, 293.6, 329.6, 392.0, 523.2];
+
+                const pad = audioCtx.createOscillator();
+                pad.type = "sine";
+                pad.frequency.setValueAtTime(notes[0] / 2, audioCtx.currentTime);
+                pad.connect(synthMasterGain);
+                pad.start();
+                synthOscs.push(pad);
+
+                let step = 0;
+                synthInterval = setInterval(function () {
+                    if (!audioCtx || !synthMasterGain) return;
+                    const now = audioCtx.currentTime;
+                    const osc = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(notes[step % notes.length], now);
+                    g.gain.setValueAtTime(0.001, now);
+                    g.gain.exponentialRampToValueAtTime(0.28, now + 0.08);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+                    osc.connect(g);
+                    g.connect(synthMasterGain);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                    step++;
+                }, 620);
+            } catch (e) {}
+        }
+
+        function stopSynthAudio() {
+            if (synthInterval) { clearInterval(synthInterval); synthInterval = null; }
+            synthOscs.forEach(function (o) { try { o.stop(); } catch (e) {} });
+            synthOscs = [];
+        }
+
+        async function exportVideoWebm30s() {
+            if (!vidProject || vidRecording) return;
+            const canvas = document.getElementById("video-canvas");
+            if (!canvas || typeof canvas.captureStream !== "function" || typeof MediaRecorder === "undefined") {
+                showToast("Browser ini belum mendukung rekaman video langsung.", "error");
+                return;
+            }
+
+            vidRecording = true;
+            vidCancelRec = false;
+            pauseVideoPlayback();
+
+            const box = document.getElementById("vp-rec-box");
+            const bar = document.getElementById("vp-rec-bar");
+            const pct = document.getElementById("vp-rec-pct");
+            const lbl = document.getElementById("vp-rec-label");
+            const dlBtn = document.getElementById("vp-download-btn");
+
+            if (box) box.classList.remove("hidden");
+            if (dlBtn) dlBtn.disabled = true;
+
+            try {
+                const stream = canvas.captureStream(30);
+                const tracks = stream.getVideoTracks();
+                if (vidAudioOn) {
+                    const ACtx = window.AudioContext || window.webkitAudioContext;
+                    if (ACtx) {
+                        if (!audioCtx) audioCtx = new ACtx();
+                        if (audioCtx.state === "suspended") await audioCtx.resume();
+                        synthRecDest = audioCtx.createMediaStreamDestination();
+                        startSynthAudio(vidProject.style);
+                        synthRecDest.stream.getAudioTracks().forEach(function (t) { tracks.push(t); });
+                    }
+                }
+
+                const combined = new MediaStream(tracks);
+                const mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus") ? "video/webm;codecs=vp9,opus" : "video/webm";
+                const chunks = [];
+                const recorder = new MediaRecorder(combined, { mimeType: mime });
+                vidMediaRecorder = recorder;
+
+                recorder.ondataavailable = function (ev) { if (ev.data && ev.data.size > 0) chunks.push(ev.data); };
+                const stopped = new Promise(function (resolve) { recorder.onstop = resolve; });
+
+                vidTime = 0;
+                renderVideoCanvasFrame(0);
+                recorder.start(250);
+
+                const t0 = performance.now();
+                await new Promise(function (resolve) {
+                    function stepRec(now) {
+                        if (vidCancelRec) { resolve(); return; }
+                        vidTime = Math.min(30.0, (now - t0) / 1000);
+                        renderVideoCanvasFrame(vidTime);
+                        const p = Math.min(100, Math.round((vidTime / 30.0) * 100));
+                        if (bar) bar.style.width = p + "%";
+                        if (pct) pct.textContent = p + "%";
+                        if (lbl) lbl.textContent = "Merekam Video 30s... Detik ke-" + Math.floor(vidTime) + "/30";
+                        if (vidTime >= 30.0) resolve();
+                        else requestAnimationFrame(stepRec);
+                    }
+                    requestAnimationFrame(stepRec);
+                });
+
+                if (recorder.state !== "inactive") recorder.stop();
+                await stopped;
+
+                if (!vidCancelRec && chunks.length > 0) {
+                    const blob = new Blob(chunks, { type: mime });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "R-Naomi-AI-Video-30s.webm";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+                    showToast("Video 30 detik berhasil diunduh!");
+                }
+            } catch (e) {
+                showToast("Gagal merekam video.", "error");
+            } finally {
+                stopSynthAudio();
+                synthRecDest = null;
+                vidMediaRecorder = null;
+                vidRecording = false;
+                if (dlBtn) dlBtn.disabled = false;
+                if (box) box.classList.add("hidden");
+            }
+        }
+
+        function cancelVideoRec() {
+            vidCancelRec = true;
+            if (vidMediaRecorder && vidMediaRecorder.state !== "inactive") {
+                try { vidMediaRecorder.stop(); } catch (e) {}
+            }
+        }
+
+        // =========================================================================
+        // MODUL 3: NAOMI ENGINE 5 (GODOT 4 IDE + MULTI-CODING > S1 + ASSET STORE)
+        // =========================================================================
+        let eTab = "2D";
+        let eLang = "GDScript Godot 4";
+        let eSelectedNode = "n-player";
+        let eZoom = 100;
+        let eDockTab = "Output";
+        let eLogs = [];
+        let eBuilding = false;
+        let eGameLoop = null;
+        let eGameRunning = false;
+        let eGamePaused = false;
+        let eGameLastTick = 0;
+        let eSimState = null;
+        const eKeys = { left: false, right: false, up: false, down: false, jump: false, attack: false };
+
+        const eData = {
+            title: "Cyber Ninja Platformer 2D",
+            genre: "platformer",
+            dim: "2D",
+            nodes: [],
+            assets: {}, // { filename: { dataUrl, img } }
+            scripts: {},
+            rules: {
+                playerColor: "#38bdf8",
+                enemyColor: "#f43f5e",
+                accentColor: "#fbbf24",
+                bgTop: "#0b1020",
+                bgBottom: "#172038",
+                speed: 240,
+                jumpForce: 460,
+                gravity: 1150,
+                playerTex: "",
+                enemyTex: ""
+            }
+        };
+
+        const BUILTIN_STORE_ITEMS = [
+            { id: "ksatria_cyber.png", name: "Ksatria Cyber", desc: "Sprite karakter utama futuristik", color: "#38bdf8", accent: "#ffffff" },
+            { id: "slime_merah.png", name: "Slime Merah", desc: "Sprite musuh dungeon & platformer", color: "#f43f5e", accent: "#fecdd3" },
+            { id: "koin_kristal.png", name: "Koin Kristal", desc: "Item koleksi skor & energi", color: "#fbbf24", accent: "#fef08a" },
+            { id: "blok_batu.png", name: "Blok Tanah Batu", desc: "Tile pijakan platform 2D", color: "#478cbf", accent: "#bae6fd" },
+            { id: "naga_langit.png", name: "Naga Langit", desc: "Boss & musuh terbang fantasi", color: "#a855f7", accent: "#f3e8ff" },
+            { id: "drone_laser.png", name: "Drone Laser", desc: "Pesawat tempur Space Shooter", color: "#10b981", accent: "#a7f3d0" }
+        ];
+
+        function isEngineAuthorized() {
+            try {
+                return localStorage.getItem(LS_ENGINE_PERM) === "1" || window._e5Perm === true;
+            } catch (e) {
+                return window._e5Perm === true;
+            }
+        }
+
+        function openEnginePermModal() {
+            const m = document.getElementById("engine-perm-modal");
+            if (m) { m.classList.remove("hidden"); m.classList.add("flex"); }
+        }
+        function closeEnginePermModal() {
+            const m = document.getElementById("engine-perm-modal");
+            if (m) { m.classList.add("hidden"); m.classList.remove("flex"); }
+        }
+        function grantEnginePermission() {
+            window._e5Perm = true;
+            const chk = document.getElementById("engine-remember-perm");
+            if (chk && chk.checked) {
+                try { localStorage.setItem(LS_ENGINE_PERM, "1"); } catch (e) {}
+            }
+            closeEnginePermModal();
+            pushEngineLog("[Otorisasi] Izin Naomi Engine 5 (> S1 & res://) diaktifkan.", "text-emerald-400");
+            switchMode("engine");
+            showToast("Naomi Engine 5 aktif!");
+        }
+
+        function defaultScriptsMap() {
+            return {
+                "GDScript Godot 4": [
+                    "extends CharacterBody2D",
+                    "class_name NaomiMasterController",
+                    "## Arsitektur Kontroler Pemain (> S1) — Naomi Engine 5",
+                    "",
+                    "@export var move_speed: float = 240.0",
+                    "@export var jump_velocity: float = -460.0",
+                    "@export var gravity_force: float = 1150.0",
+                    "",
+                    "func _physics_process(delta: float) -> void:",
+                    "\tif not is_on_floor():",
+                    "\t\tvelocity.y += gravity_force * delta",
+                    "",
+                    "\tif Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():",
+                    "\t\tvelocity.y = jump_velocity",
+                    "",
+                    "\tvar axis := Input.get_axis(\"ui_left\", \"ui_right\")",
+                    "\tvelocity.x = move_toward(velocity.x, axis * move_speed, move_speed * 10.0 * delta)",
+                    "\tmove_and_slide()"
+                ].join("\n"),
+                "C# Unity": [
+                    "using UnityEngine;",
+                    "",
+                    "namespace NaomiEngine5.Core {",
+                    "    // Arsitektur Kontroler State-Machine (> S1)",
+                    "    [RequireComponent(typeof(Rigidbody2D))]",
+                    "    public class PlayerController : MonoBehaviour {",
+                    "        [SerializeField] private float moveSpeed = 6.5f;",
+                    "        [SerializeField] private float jumpForce = 12.5f;",
+                    "        private Rigidbody2D _rb;",
+                    "        private bool _grounded;",
+                    "",
+                    "        private void Awake() => _rb = GetComponent<Rigidbody2D>();",
+                    "",
+                    "        private void Update() {",
+                    "            float h = Input.GetAxisRaw(\"Horizontal\");",
+                    "            _rb.linearVelocity = new Vector2(h * moveSpeed, _rb.linearVelocity.y);",
+                    "            if (Input.GetButtonDown(\"Jump\") && _grounded) {",
+                    "                _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);",
+                    "                _grounded = false;",
+                    "            }",
+                    "        }",
+                    "    }",
+                    "}"
+                ].join("\n"),
+                "JavaScript / Three.js": [
+                    "// Loop Fisika & Entitas 60 FPS — Naomi Engine 5",
+                    "export class NaomiPhysicsEngine {",
+                    "    constructor(speed = 240, jump = 460, gravity = 1150) {",
+                    "        this.speed = speed;",
+                    "        this.jump = jump;",
+                    "        this.gravity = gravity;",
+                    "    }",
+                    "    step(entity, dt, input) {",
+                    "        entity.vx = (input.right - input.left) * this.speed;",
+                    "        entity.vy += this.gravity * dt;",
+                    "        if (input.jump && entity.grounded) {",
+                    "            entity.vy = -this.jump;",
+                    "            entity.grounded = false;",
+                    "        }",
+                    "        entity.x += entity.vx * dt;",
+                    "        entity.y += entity.vy * dt;",
+                    "    }",
+                    "}"
+                ].join("\n"),
+                "GLSL Shader": [
+                    "shader_type canvas_item;",
+                    "// Rim-Glow & Chromatic Pulse Shader — Naomi Engine 5",
+                    "",
+                    "uniform vec4 glow_color : source_color = vec4(0.22, 0.74, 0.97, 1.0);",
+                    "uniform float speed : hint_range(0.5, 8.0) = 2.5;",
+                    "",
+                    "void fragment() {",
+                    "\tvec4 tex = texture(TEXTURE, UV);",
+                    "\tfloat pulse = 0.65 + 0.35 * sin(TIME * speed + UV.y * 6.28);",
+                    "\tCOLOR = vec4(mix(tex.rgb, glow_color.rgb * 1.3, 0.3 * pulse), tex.a);",
+                    "}"
+                ].join("\n"),
+                "C++": [
+                    "#include <algorithm>",
+                    "// High-Performance Physics Integrator — Naomi Engine 5",
+                    "struct Body2D { float x, y, vx, vy; bool grounded; };",
+                    "",
+                    "void IntegratePhysics(Body2D& b, float dt, float dir, float speed, float gravity) {",
+                    "    b.vx = dir * speed;",
+                    "    b.vy += gravity * dt;",
+                    "    b.x += b.vx * dt;",
+                    "    b.y += b.vy * dt;",
+                    "}"
+                ].join("\n"),
+                "Python": [
+                    "# Arsitektur AI Patroli & Pathfinding — Naomi Engine 5",
+                    "class EnemyPatrolAgent:",
+                    "    def __init__(self, x: float, speed: float = 120.0):",
+                    "        self.x = x",
+                    "        self.speed = speed",
+                    "        self.direction = 1",
+                    "",
+                    "    def tick(self, dt: float, min_x: float, max_x: float) -> float:",
+                    "        self.x += self.direction * self.speed * dt",
+                    "        if self.x <= min_x or self.x >= max_x:",
+                    "            self.direction *= -1",
+                    "        return self.x"
+                ].join("\n"),
+                "Lua": [
+                    "-- Gameplay State Controller (Love2D / Roblox) — Naomi Engine 5",
+                    "local Player = { x = 140, y = 240, vx = 0, vy = 0, speed = 240 }",
+                    "",
+                    "function Player:update(dt, moveX)",
+                    "    self.vx = moveX * self.speed",
+                    "    self.x = self.x + self.vx * dt",
+                    "end",
+                    "",
+                    "return Player"
+                ].join("\n")
+            };
+        }
+
+        function initEngineModule() {
+            engineResetWorkspace(true);
+            renderAssetStoreGrid();
+            bindViewportDrag();
+            bindEngineKeyboard();
+            window.addEventListener("resize", function () {
+                if (activeMode === "engine") drawEngineViewport();
+            });
+        }
+
+        function engineResetWorkspace(silent) {
+            eData.title = "Cyber Ninja Platformer 2D";
+            eData.genre = "platformer";
+            eData.dim = "2D";
+            eData.nodes = [
+                { id: "n-root", name: "RootScene", type: "Node2D", x: 0, y: 0, scale: 1, speed: 0, gravity: 1150, color: "#58a6ff", tex: "" },
+                { id: "n-player", name: "Player", type: "CharacterBody2D", x: 140, y: 220, scale: 1, speed: 240, gravity: 1150, color: "#38bdf8", tex: "" },
+                { id: "n-enemy", name: "EnemyAI", type: "CharacterBody2D", x: 350, y: 220, scale: 1, speed: 125, gravity: 1150, color: "#f43f5e", tex: "" },
+                { id: "n-ground", name: "PlatformGround", type: "StaticBody2D", x: 245, y: 280, scale: 1, speed: 0, gravity: 0, color: "#478cbf", tex: "" },
+                { id: "n-cam", name: "Camera2D", type: "Camera2D", x: 0, y: 0, scale: 1, speed: 0, gravity: 0, color: "#a855f7", tex: "" },
+                { id: "n-hud", name: "UI_HUD", type: "CanvasLayer", x: 0, y: 0, scale: 1, speed: 0, gravity: 0, color: "#fbbf24", tex: "" }
+            ];
+            eData.scripts = defaultScriptsMap();
+            eSelectedNode = "n-player";
+            eLogs = [
+                { text: "[Naomi Engine 5] Core Multi-Coding (> S1) & Arsitektur Godot 4 siap.", cls: "text-emerald-400" },
+                { text: "[FileSystem] Virtual folder res:// siap menerima bahan dari galeri HP.", cls: "text-slate-400" }
+            ];
+            refreshAllEngineViews();
+            if (!silent) showToast("Workspace direset ke proyek baru!");
+        }
+
+        function refreshAllEngineViews() {
+            renderEngineNodes();
+            renderEngineRes();
+            renderEngineInspector();
+            renderEngineScriptArea();
+            renderEngineDock();
+            drawEngineViewport();
+            const gTitle = document.getElementById("egame-title");
+            if (gTitle) gTitle.textContent = eData.title;
+        }
+
+        function toggleEngineMenu() {
+            const dd = document.getElementById("engine-menu-dropdown");
+            if (dd) dd.classList.toggle("hidden");
+        }
+
+        function setEngineTab(tabName) {
+            eTab = tabName;
+            if (window.innerWidth < 1024) setEngineMobilePane("main");
+
+            ["2D", "3D", "Script", "Game", "Asset Store"].forEach(function (t) {
+                const btn = document.getElementById("etab-" + t);
+                if (!btn) return;
+                btn.className = t === tabName
+                    ? "px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-bold border godot-tab-active whitespace-nowrap transition"
+                    : "px-2 sm:px-2.5 py-1 rounded-md text-[11px] sm:text-xs font-semibold border border-transparent text-slate-400 hover:text-white whitespace-nowrap transition";
+            });
+
+            document.getElementById("esub-viewport").classList.add("hidden");
+            document.getElementById("esub-script").classList.add("hidden");
+            document.getElementById("esub-game").classList.add("hidden");
+            document.getElementById("esub-store").classList.add("hidden");
+
+            if (tabName === "2D" || tabName === "3D") {
+                eData.dim = tabName;
+                document.getElementById("evp-title").textContent = "Viewport " + tabName;
+                document.getElementById("esub-viewport").classList.remove("hidden");
+                drawEngineViewport();
+            } else if (tabName === "Script") {
+                document.getElementById("esub-script").classList.remove("hidden");
+                renderEngineScriptArea();
+            } else if (tabName === "Game") {
+                document.getElementById("esub-game").classList.remove("hidden");
+                enginePlayGame();
+            } else if (tabName === "Asset Store") {
+                document.getElementById("esub-store").classList.remove("hidden");
+            }
+        }
+
+        function setEngineMobilePane(pane) {
+            ["main", "left", "right"].forEach(function (p) {
+                const btn = document.getElementById("emob-" + p);
+                if (!btn) return;
+                btn.className = p === pane
+                    ? "px-3 py-1 rounded-lg text-xs font-bold border godot-tab-active shrink-0"
+                    : "px-3 py-1 rounded-lg text-xs font-semibold border border-transparent text-slate-400 shrink-0";
+            });
+
+            const pLeft = document.getElementById("engine-pane-left");
+            const pMain = document.getElementById("engine-pane-main");
+            const pRight = document.getElementById("engine-pane-right");
+
+            pLeft.className = "hidden lg:flex lg:w-64 xl:w-72 flex-col border-r godot-border godot-panel shrink-0 min-h-0";
+            pMain.className = "hidden lg:flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden";
+            pRight.className = "hidden lg:flex lg:w-72 flex-col border-l godot-border godot-panel shrink-0 min-h-0";
+
+            if (pane === "main") {
+                pMain.className = "flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden";
+                drawEngineViewport();
+            } else if (pane === "left") {
+                pLeft.className = "flex flex-1 lg:flex-none lg:w-64 xl:w-72 flex-col border-r godot-border godot-panel shrink-0 min-h-0";
+            } else if (pane === "right") {
+                pRight.className = "flex flex-1 lg:flex-none lg:w-72 flex-col border-l godot-border godot-panel shrink-0 min-h-0";
+            }
+        }
+
+        // Skena & res://
+        function renderEngineNodes() {
+            const box = document.getElementById("engine-node-list");
+            if (!box) return;
+            box.innerHTML = eData.nodes.map(function (n, idx) {
+                const active = n.id === eSelectedNode;
+                const pad = idx === 0 ? "pl-2" : "pl-5";
+                return (
+                    '<div onclick="selectEngineNode(\'' + n.id + '\')" class="' + pad + ' pr-2 py-1.5 rounded-lg cursor-pointer flex items-center justify-between transition ' +
+                    (active ? "bg-[#478cbf]/30 text-white font-bold" : "hover:bg-white/5 text-slate-300") + '">' +
+                    '<span class="truncate">◉ ' + escapeHtml(n.name) + ' <span class="text-[10px] text-slate-500">[' + escapeHtml(n.type) + ']</span></span>' +
+                    '</div>'
+                );
+            }).join("");
+        }
+
+        function engineAddNode() {
+            const idx = eData.nodes.length + 1;
+            const node = {
+                id: "n-custom-" + Date.now(),
+                name: "EntityNode_" + idx,
+                type: eData.dim === "3D" ? "MeshInstance3D" : "Sprite2D",
+                x: 110 + idx * 28,
+                y: 150 + (idx % 3) * 35,
+                scale: 1,
+                speed: 140,
+                gravity: 0,
+                color: "#a855f7",
+                tex: ""
+            };
+            eData.nodes.push(node);
+            eSelectedNode = node.id;
+            refreshAllEngineViews();
+            pushEngineLog("[Skena] Node ditambahkan: " + node.name, "text-sky-300");
+        }
+
+        function selectEngineNode(id) {
+            eSelectedNode = id;
+            renderEngineNodes();
+            renderEngineInspector();
+            drawEngineViewport();
+        }
+
+        function renderEngineRes() {
+            const box = document.getElementById("engine-res-list");
+            if (!box) return;
+            const list = [
+                '<div onclick="setEngineTab(\'2D\')" class="px-2 py-1 rounded hover:bg-white/5 cursor-pointer text-sky-300 truncate">🎬 res://main_scene.tscn</div>'
+            ];
+            Object.keys(eData.scripts).forEach(function (lang) {
+                list.push(
+                    '<div onclick="selectEngineLang(\'' + escapeHtml(lang) + '\'); setEngineTab(\'Script\');" class="px-2 py-1 rounded hover:bg-white/5 cursor-pointer text-amber-200 truncate">📜 script_' + escapeHtml(lang.toLowerCase().replace(/[^a-z0-9]/g, "")) + '</div>'
+                );
+            });
+            Object.keys(eData.assets).forEach(function (fname) {
+                const a = eData.assets[fname];
+                list.push(
+                    '<div onclick="equipAssetToSelectedNode(\'' + escapeHtml(fname) + '\')" class="px-2 py-1 rounded hover:bg-emerald-500/15 cursor-pointer flex items-center justify-between gap-1 text-emerald-300">' +
+                    '<div class="flex items-center gap-1.5 min-w-0">' +
+                    '<img src="' + a.dataUrl + '" class="w-4 h-4 rounded object-cover border border-white/20 shrink-0">' +
+                    '<span class="truncate">' + escapeHtml(fname) + '</span>' +
+                    '</div>' +
+                    '<span class="text-[9px] shrink-0">pasang</span>' +
+                    '</div>'
+                );
+            });
+            box.innerHTML = list.join("");
+        }
+
+        function onEngineUploadGallery(ev) {
+            const files = ev.target && ev.target.files;
+            if (!files || files.length === 0) return;
+
+            Array.from(files).forEach(function (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const dataUrl = e.target.result;
+                    const img = new Image();
+                    img.onload = function () {
+                        const clean = file.name.replace(/\s+/g, "_").toLowerCase();
+                        eData.assets[clean] = { dataUrl: dataUrl, img: img };
+                        equipAssetToSelectedNode(clean);
+                        renderEngineRes();
+                        pushEngineLog("[res://] Bahan galeri diimpor: res://" + clean, "text-emerald-400");
+                        showToast("Bahan \"" + clean + "\" masuk ke res://!");
+                    };
+                    img.src = dataUrl;
+                };
+                reader.readAsDataURL(file);
+            });
+            ev.target.value = "";
+        }
+
+        function equipAssetToSelectedNode(fname) {
+            const node = eData.nodes.find(function (n) { return n.id === eSelectedNode; }) || eData.nodes[1];
+            if (!node) return;
+            node.tex = fname;
+            if (node.id === "n-enemy" || node.name.toLowerCase().indexOf("enemy") !== -1) {
+                eData.rules.enemyTex = fname;
+            } else {
+                eData.rules.playerTex = fname;
+            }
+            renderEngineInspector();
+            drawEngineViewport();
+        }
+
+        // Asset Store
+        function renderAssetStoreGrid() {
+            const grid = document.getElementById("engine-store-grid");
+            if (!grid) return;
+            grid.innerHTML = BUILTIN_STORE_ITEMS.map(function (item) {
+                return (
+                    '<div class="rounded-2xl godot-panel border godot-border p-3 space-y-2 flex flex-col justify-between">' +
+                    '<div class="space-y-1.5">' +
+                    '<div class="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-xs text-slate-950 shadow" style="background:' + item.color + '">' + item.name.slice(0, 2).toUpperCase() + '</div>' +
+                    '<div class="font-bold text-xs text-white">' + escapeHtml(item.name) + '</div>' +
+                    '<p class="text-[11px] text-slate-400 leading-snug">' + escapeHtml(item.desc) + '</p>' +
+                    '</div>' +
+                    '<button type="button" onclick="installStoreAsset(\'' + item.id + '\', \'' + item.color + '\', \'' + item.accent + '\')" class="w-full py-1.5 rounded-xl bg-[#478cbf]/25 hover:bg-[#478cbf]/40 border border-[#478cbf]/50 text-[11px] font-bold text-sky-200 transition">+ Pasang ke res://</button>' +
+                    '</div>'
+                );
+            }).join("");
+        }
+
+        function installStoreAsset(id, color, accent) {
+            const c = document.createElement("canvas");
+            c.width = 64;
+            c.height = 64;
+            const ctx = c.getContext("2d");
+            ctx.fillStyle = color;
+            ctx.fillRect(6, 6, 52, 52);
+            ctx.strokeStyle = accent;
+            ctx.lineWidth = 4;
+            ctx.strokeRect(8, 8, 48, 48);
+            ctx.fillStyle = accent;
+            ctx.fillRect(20, 20, 8, 8);
+            ctx.fillRect(36, 20, 8, 8);
+            ctx.fillRect(22, 38, 20, 6);
+
+            const dataUrl = c.toDataURL("image/png");
+            const img = new Image();
+            img.onload = function () {
+                eData.assets[id] = { dataUrl: dataUrl, img: img };
+                equipAssetToSelectedNode(id);
+                renderEngineRes();
+                pushEngineLog("[Asset Store] Aset dipasang ke res://" + id, "text-amber-300");
+                showToast("Aset \"" + id + "\" dipasang ke res://!");
+            };
+            img.src = dataUrl;
+        }
+
+        // Inspektur
+        function renderEngineInspector() {
+            const body = document.getElementById("engine-inspector-body");
+            const tag = document.getElementById("einsp-type");
+            if (!body) return;
+
+            const node = eData.nodes.find(function (n) { return n.id === eSelectedNode; });
+            if (!node) {
+                body.innerHTML = '<div class="text-slate-500 text-center py-4">Pilih Node di Skena.</div>';
+                return;
+            }
+            if (tag) tag.textContent = node.type;
+
+            const opts = ['<option value="">(Bentuk Default)</option>'].concat(
+                Object.keys(eData.assets).map(function (a) {
+                    return '<option value="' + escapeHtml(a) + '"' + (node.tex === a ? " selected" : "") + '>' + escapeHtml(a) + '</option>';
+                })
+            ).join("");
+
+            body.innerHTML =
+                '<div class="rounded-xl bg-[#14181d] border godot-border p-2.5 space-y-2">' +
+                '<div class="font-bold text-[11px] text-slate-300 border-b godot-border pb-1">Transform &amp; Physics</div>' +
+                '<div class="flex items-center justify-between"><span class="text-slate-400">Position X</span><input type="number" value="' + Math.round(node.x) + '" oninput="updateNodeField(\'x\', parseFloat(this.value)||0)" class="w-24 bg-[#1d2229] border godot-border rounded px-2 py-1 text-right font-mono text-sky-300"></div>' +
+                '<div class="flex items-center justify-between"><span class="text-slate-400">Position Y</span><input type="number" value="' + Math.round(node.y) + '" oninput="updateNodeField(\'y\', parseFloat(this.value)||0)" class="w-24 bg-[#1d2229] border godot-border rounded px-2 py-1 text-right font-mono text-sky-300"></div>' +
+                '<div class="flex items-center justify-between"><span class="text-slate-400">Scale</span><input type="number" step="0.1" value="' + node.scale + '" oninput="updateNodeField(\'scale\', parseFloat(this.value)||1)" class="w-24 bg-[#1d2229] border godot-border rounded px-2 py-1 text-right font-mono text-slate-200"></div>' +
+                '<div class="flex items-center justify-between"><span class="text-slate-400">Speed</span><input type="number" value="' + node.speed + '" oninput="updateNodeField(\'speed\', parseFloat(this.value)||0)" class="w-24 bg-[#1d2229] border godot-border rounded px-2 py-1 text-right font-mono text-emerald-300"></div>' +
+                '<div class="flex items-center justify-between"><span class="text-slate-400">Gravity</span><input type="number" value="' + node.gravity + '" oninput="updateNodeField(\'gravity\', parseFloat(this.value)||0)" class="w-24 bg-[#1d2229] border godot-border rounded px-2 py-1 text-right font-mono text-emerald-300"></div>' +
+                '</div>' +
+                '<div class="rounded-xl bg-[#14181d] border godot-border p-2.5 space-y-2">' +
+                '<div class="font-bold text-[11px] text-slate-300 border-b godot-border pb-1">Visual &amp; Texture (res://)</div>' +
+                '<div class="flex items-center justify-between"><span class="text-slate-400">Color</span><input type="color" value="' + node.color + '" oninput="updateNodeField(\'color\', this.value)" class="w-14 h-6 bg-transparent border-0 cursor-pointer"></div>' +
+                '<div class="space-y-1"><span class="text-slate-400 block">Texture Sprite</span>' +
+                '<select onchange="updateNodeField(\'tex\', this.value)" class="w-full bg-[#1d2229] border godot-border rounded px-2 py-1 text-xs text-slate-200">' + opts + '</select>' +
+                '</div>' +
+                '</div>';
+        }
+
+        function updateNodeField(key, val) {
+            const node = eData.nodes.find(function (n) { return n.id === eSelectedNode; });
+            if (!node) return;
+            node[key] = val;
+            if (node.id === "n-player") {
+                if (key === "color") eData.rules.playerColor = val;
+                if (key === "speed" && val > 0) eData.rules.speed = val;
+                if (key === "gravity" && val > 0) eData.rules.gravity = val;
+                if (key === "tex") eData.rules.playerTex = val;
+            } else if (node.id === "n-enemy") {
+                if (key === "color") eData.rules.enemyColor = val;
+                if (key === "tex") eData.rules.enemyTex = val;
+            }
+            drawEngineViewport();
+        }
+
+        // Bottom Dock (Output | Pendebug | Suara | Animasi | Editor Shader)
+        function setEngineDockTab(tab) {
+            eDockTab = tab;
+            document.querySelectorAll(".edock-btn").forEach(function (b) {
+                const active = b.getAttribute("data-dock") === tab;
+                b.className = active
+                    ? "edock-btn px-2 py-0.5 rounded text-[11px] font-bold border godot-tab-active shrink-0"
+                    : "edock-btn px-2 py-0.5 rounded text-[11px] font-semibold border border-transparent text-slate-400 shrink-0";
+            });
+            renderEngineDock();
+        }
+
+        function pushEngineLog(text, cls) {
+            eLogs.push({ text: "[" + shortClock() + "] " + text, cls: cls || "text-slate-300" });
+            eLogs = eLogs.slice(-30);
+            if (eDockTab === "Output") renderEngineDock();
+        }
+
+        function renderEngineDock() {
+            const box = document.getElementById("engine-dock-content");
+            if (!box) return;
+            if (eDockTab === "Output") {
+                box.innerHTML = eLogs.map(function (l) {
+                    return '<div class="' + l.cls + '">' + escapeHtml(l.text) + '</div>';
+                }).join("");
+                box.scrollTop = box.scrollHeight;
+            } else if (eDockTab === "Pendebug") {
+                box.innerHTML =
+                    '<div class="text-emerald-400">● FPS Engine: 60.0 FPS (Stabil)</div>' +
+                    '<div class="text-sky-300">● Active Nodes: ' + eData.nodes.length + ' nodes</div>' +
+                    '<div class="text-amber-300">● Mounted Assets (res://): ' + Object.keys(eData.assets).length + ' files</div>' +
+                    '<div class="text-slate-400">● Physics Step: Fixed 1/60s</div>';
+            } else if (eDockTab === "Suara") {
+                box.innerHTML =
+                    '<div class="space-y-2">' +
+                    '<div class="text-slate-300">Audio Bus Master (Web Audio API):</div>' +
+                    '<button type="button" onclick="playEngineTestBeep(523.25)" class="px-2.5 py-1 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold mr-1">🔊 SFX Jump</button>' +
+                    '<button type="button" onclick="playEngineTestBeep(220)" class="px-2.5 py-1 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-bold">💥 SFX Laser</button>' +
+                    '</div>';
+            } else if (eDockTab === "Animasi") {
+                box.innerHTML =
+                    '<div class="space-y-1.5">' +
+                    '<div class="text-sky-300 font-bold">AnimationPlayer Track:</div>' +
+                    '<div class="text-slate-300">• idle_pulse (0.0s - 1.0s) [Loop]</div>' +
+                    '<div class="text-slate-300">• run_cycle (0.0s - 0.6s) [Loop]</div>' +
+                    '<div class="text-slate-300">• jump_squash (0.0s - 0.4s)</div>' +
+                    '</div>';
+            } else if (eDockTab === "Editor Shader") {
+                box.innerHTML =
+                    '<div class="space-y-1">' +
+                    '<div class="text-fuchsia-300 font-bold">CanvasItem Shader Active:</div>' +
+                    '<div class="text-slate-400">uniform vec4 glow_color = vec4(0.22, 0.74, 0.97, 1.0);</div>' +
+                    '<button type="button" onclick="selectEngineLang(\'GLSL Shader\'); setEngineTab(\'Script\');" class="mt-1 px-2.5 py-1 rounded bg-[#478cbf]/25 text-sky-200 text-[11px] font-bold">Buka di Script Studio</button>' +
+                    '</div>';
+            }
+        }
+
+        function playEngineTestBeep(freq) {
+            try {
+                const ACtx = window.AudioContext || window.webkitAudioContext;
+                if (!ACtx) return;
+                if (!audioCtx) audioCtx = new ACtx();
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.connect(g);
+                g.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.26);
+            } catch (e) {}
+        }
+
+        // Viewport 2D/3D Canvas
+        function engineZoom(delta) {
+            eZoom = Math.max(50, Math.min(200, eZoom + delta));
+            const el = document.getElementById("evp-zoom");
+            if (el) el.textContent = eZoom + "%";
+            drawEngineViewport();
+        }
+
+        function bindViewportDrag() {
+            const canvas = document.getElementById("engine-vp-canvas");
+            if (!canvas) return;
+            let dragging = false;
+            canvas.addEventListener("pointerdown", function (e) {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                for (let i = eData.nodes.length - 1; i >= 0; i--) {
+                    const n = eData.nodes[i];
+                    if (n.x === 0 && n.y === 0) continue;
+                    if (Math.abs(mx - n.x) < 34 && Math.abs(my - n.y) < 34) {
+                        selectEngineNode(n.id);
+                        dragging = true;
+                        break;
+                    }
+                }
+            });
+            canvas.addEventListener("pointermove", function (e) {
+                if (!dragging) return;
+                const n = eData.nodes.find(function (item) { return item.id === eSelectedNode; });
+                if (!n) return;
+                const rect = canvas.getBoundingClientRect();
+                n.x = Math.max(30, Math.min(rect.width - 30, e.clientX - rect.left));
+                n.y = Math.max(30, Math.min(rect.height - 30, e.clientY - rect.top));
+                renderEngineInspector();
+                drawEngineViewport();
+            });
+            window.addEventListener("pointerup", function () { dragging = false; });
+        }
+
+        function drawEngineViewport() {
+            const canvas = document.getElementById("engine-vp-canvas");
+            if (!canvas || !canvas.parentElement) return;
+            const w = canvas.parentElement.clientWidth || 500;
+            const h = canvas.parentElement.clientHeight || 300;
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+
+            ctx.fillStyle = eData.dim === "3D" ? "#151a24" : "#1a2029";
+            ctx.fillRect(0, 0, w, h);
+
+            const ruler = 20;
+            const z = eZoom / 100;
+            ctx.strokeStyle = "rgba(255,255,255,0.05)";
+            for (let gx = ruler; gx < w; gx += 40 * z) {
+                ctx.beginPath(); ctx.moveTo(gx, ruler); ctx.lineTo(gx, h); ctx.stroke();
+            }
+            for (let gy = ruler; gy < h; gy += 40 * z) {
+                ctx.beginPath(); ctx.moveTo(ruler, gy); ctx.lineTo(w, gy); ctx.stroke();
+            }
+
+            const ox = ruler + 45;
+            const oy = ruler + 40;
+            ctx.strokeStyle = "rgba(244, 63, 94, 0.45)";
+            ctx.beginPath(); ctx.moveTo(ruler, oy); ctx.lineTo(w, oy); ctx.stroke();
+            ctx.strokeStyle = "rgba(52, 211, 153, 0.45)";
+            ctx.beginPath(); ctx.moveTo(ox, ruler); ctx.lineTo(ox, h); ctx.stroke();
+
+            eData.nodes.forEach(function (n) {
+                if (n.x === 0 && n.y === 0) return;
+                ctx.save();
+                ctx.translate(n.x, n.y);
+                ctx.scale((n.scale || 1) * z, (n.scale || 1) * z);
+                const asset = n.tex && eData.assets[n.tex];
+                if (asset && asset.img) {
+                    ctx.drawImage(asset.img, -22, -22, 44, 44);
+                } else {
+                    ctx.fillStyle = n.color || "#38bdf8";
+                    ctx.fillRect(-20, -20, 40, 40);
+                    if (eData.dim === "3D") {
+                        ctx.strokeStyle = "#ffffff";
+                        ctx.strokeRect(-14, -26, 40, 40);
+                    }
+                }
+                if (n.id === eSelectedNode) {
+                    ctx.strokeStyle = "#fbbf24";
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(-25, -25, 50, 50);
+                }
+                ctx.restore();
+
+                ctx.font = "600 11px Inter, sans-serif";
+                ctx.fillStyle = n.id === eSelectedNode ? "#fbbf24" : "#cbd5e1";
+                ctx.textAlign = "center";
+                ctx.fillText(n.name, n.x, n.y - 30);
+            });
+
+            ctx.fillStyle = "#14181d";
+            ctx.fillRect(0, 0, w, ruler);
+            ctx.fillRect(0, 0, ruler, h);
+            ctx.fillStyle = "#64748b";
+            ctx.font = "9px JetBrains Mono, monospace";
+            ctx.textAlign = "left";
+            for (let rx = ruler; rx < w; rx += 50) ctx.fillText(String(Math.round((rx - ox) / z)), rx + 2, 13);
+            for (let ry = ruler + 18; ry < h; ry += 50) ctx.fillText(String(Math.round((ry - oy) / z)), 2, ry);
+        }
+
+        // Script Studio (> S1)
+        function selectEngineLang(lang) {
+            eLang = lang;
+            document.querySelectorAll(".elang-btn").forEach(function (b) {
+                const active = b.getAttribute("data-lang") === lang;
+                b.className = active
+                    ? "elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-bold border godot-tab-active shrink-0"
+                    : "elang-btn px-2.5 py-1 rounded text-[11px] font-mono font-semibold border border-transparent text-slate-400 shrink-0";
+            });
+            renderEngineScriptArea();
+        }
+
+        function renderEngineScriptArea() {
+            const area = document.getElementById("engine-code-area");
+            if (!area) return;
+            area.value = eData.scripts[eLang] || "";
+            updateEngineLineNumbers();
+        }
+
+        function onEngineCodeEdit() {
+            const area = document.getElementById("engine-code-area");
+            if (area) eData.scripts[eLang] = area.value;
+            updateEngineLineNumbers();
+        }
+
+        function updateEngineLineNumbers() {
+            const area = document.getElementById("engine-code-area");
+            const linesEl = document.getElementById("engine-code-lines");
+            if (!area || !linesEl) return;
+            const total = (area.value.match(/\n/g) || []).length + 1;
+            const arr = [];
+            for (let i = 1; i <= total; i++) arr.push(i);
+            linesEl.textContent = arr.join("\n");
+        }
+
+        function syncEngineCodeScroll() {
+            const area = document.getElementById("engine-code-area");
+            const linesEl = document.getElementById("engine-code-lines");
+            if (area && linesEl) linesEl.scrollTop = area.scrollTop;
+        }
+
+        function copyEngineCode(btn) {
+            copyRawText(eData.scripts[eLang] || "", btn, "Salin Script");
+        }
+
+        function downloadEngineCode() {
+            const exts = {
+                "GDScript Godot 4": "gd",
+                "C# Unity": "cs",
+                "JavaScript / Three.js": "js",
+                "GLSL Shader": "gdshader",
+                "C++": "cpp",
+                "Python": "py",
+                "Lua": "lua"
+            };
+            const ext = exts[eLang] || "txt";
+            const blob = new Blob([eData.scripts[eLang] || ""], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "naomi_engine5." + ext;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+            showToast("File ." + ext + " diunduh!");
+        }
+
+        // AI Command Bar Builder
+        function runEnginePreset(text) {
+            const inp = document.getElementById("engine-prompt-input");
+            if (inp) inp.value = text;
+            onEngineCommandSubmit();
+        }
+
+        async function onEngineCommandSubmit(e) {
+            if (e) e.preventDefault();
+            if (eBuilding) return;
+
+            const inp = document.getElementById("engine-prompt-input");
+            const directive = inp ? inp.value.trim() : "";
+            if (!directive) {
+                showToast("Tulis arahan game atau coding dulu!", "error");
+                return;
+            }
+
+            eBuilding = true;
+            const btn = document.getElementById("engine-build-btn");
+            if (btn) btn.disabled = true;
+            pushEngineLog("[Naomi Engine 5] Menyusun arsitektur & script (> S1): " + directive, "text-sky-300");
+            showToast("Naomi Engine 5 merakit proyek...");
+
+            try {
+                const uploaded = Object.keys(eData.assets);
+                const arch = await fetchEngineArchitecture(directive, uploaded);
+                applyEngineArchitecture(arch, uploaded);
+                if (inp) inp.value = "";
+                pushEngineLog("[Selesai] \"" + eData.title + "\" siap dimainkan & multi-script diperbarui!", "text-emerald-400");
+                showToast("Proyek \"" + eData.title + "\" selesai!");
+                setEngineTab("Game");
+            } catch (err) {
+                applyEngineLocalFallback(directive, Object.keys(eData.assets));
+                if (inp) inp.value = "";
+                setEngineTab("Game");
+            } finally {
+                eBuilding = false;
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        async function fetchEngineArchitecture(directive, uploaded) {
+            const sys = [
+                getDeviceTimePrompt(),
+                "Kamu adalah NAOMI ENGINE 5 — arsitek game engine & master programmer di atas S1/S2.",
+                "Susun proyek berdasarkan arahan pengguna dan kembalikan JSON dengan:",
+                "'title' (judul proyek), 'genre' ('platformer', 'shooter', atau 'rpg'), 'dim' ('2D' atau '3D'),",
+                "'gdscript' (kode GDScript Godot 4 lengkap), 'csharp' (kode C# Unity lengkap), 'glsl' (kode GLSL Shader), 'javascript' (kode JS gameplay),",
+                "'playerColor', 'enemyColor', 'bgTop', 'bgBottom', 'speed' (number), 'jumpForce' (number).",
+                "Aset tersedia di res://: " + (uploaded.join(", ") || "tidak ada")
+            ].join("\n");
+
+            const body = {
+                contents: [{ role: "user", parts: [{ text: directive }] }],
+                systemInstruction: { parts: [{ text: sys }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            title: { type: "STRING" },
+                            genre: { type: "STRING" },
+                            dim: { type: "STRING" },
+                            gdscript: { type: "STRING" },
+                            csharp: { type: "STRING" },
+                            glsl: { type: "STRING" },
+                            javascript: { type: "STRING" },
+                            playerColor: { type: "STRING" },
+                            enemyColor: { type: "STRING" },
+                            bgTop: { type: "STRING" },
+                            bgBottom: { type: "STRING" },
+                            speed: { type: "NUMBER" },
+                            jumpForce: { type: "NUMBER" }
+                        },
+                        required: ["title", "genre", "dim", "gdscript", "csharp", "glsl", "javascript", "playerColor", "enemyColor", "bgTop", "bgBottom", "speed", "jumpForce"]
+                    }
+                }
+            };
+
+            const url = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL_PRIMARY + ":generateContent?key=" + apiKey;
+            const resp = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            if (!resp.ok) throw new Error("HTTP " + resp.status);
+            const data = await resp.json();
+            const raw = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text;
+            return JSON.parse(raw);
+        }
+
+        function applyEngineArchitecture(arch, uploaded) {
+            eData.title = arch.title || "Naomi Engine 5 Game";
+            eData.genre = ["platformer", "shooter", "rpg"].indexOf(arch.genre) !== -1 ? arch.genre : "platformer";
+            eData.dim = arch.dim === "3D" ? "3D" : "2D";
+            if (arch.gdscript) eData.scripts["GDScript Godot 4"] = arch.gdscript;
+            if (arch.csharp) eData.scripts["C# Unity"] = arch.csharp;
+            if (arch.glsl) eData.scripts["GLSL Shader"] = arch.glsl;
+            if (arch.javascript) eData.scripts["JavaScript / Three.js"] = arch.javascript;
+
+            eData.rules.playerColor = arch.playerColor || "#38bdf8";
+            eData.rules.enemyColor = arch.enemyColor || "#f43f5e";
+            eData.rules.bgTop = arch.bgTop || "#0b1020";
+            eData.rules.bgBottom = arch.bgBottom || "#172038";
+            eData.rules.speed = arch.speed || 240;
+            eData.rules.jumpForce = arch.jumpForce || 460;
+            if (uploaded[0]) eData.rules.playerTex = uploaded[0];
+            if (uploaded[1]) eData.rules.enemyTex = uploaded[1];
+
+            refreshAllEngineViews();
+        }
+
+        function applyEngineLocalFallback(directive, uploaded) {
+            const lower = directive.toLowerCase();
+            const g = (lower.indexOf("shooter") !== -1 || lower.indexOf("tembak") !== -1 || lower.indexOf("space") !== -1)
+                ? "shooter"
+                : (lower.indexOf("rpg") !== -1 || lower.indexOf("dungeon") !== -1 ? "rpg" : "platformer");
+            eData.title = directive.slice(0, 38);
+            eData.genre = g;
+            if (uploaded[0]) eData.rules.playerTex = uploaded[0];
+            refreshAllEngineViews();
+        }
+
+        // Playable Game Runtime
+        function bindEngineKeyboard() {
+            window.addEventListener("keydown", function (e) {
+                if (activeMode !== "engine") return;
+                const tag = document.activeElement && document.activeElement.tagName;
+                if (tag === "INPUT" || tag === "TEXTAREA") return;
+                if (e.key === "ArrowLeft" || e.key === "a") eKeys.left = true;
+                if (e.key === "ArrowRight" || e.key === "d") eKeys.right = true;
+                if (e.key === "ArrowUp" || e.key === "w" || e.key === " ") { eKeys.up = true; eKeys.jump = true; }
+                if (e.key === "ArrowDown" || e.key === "s") eKeys.down = true;
+                if (e.key === "z" || e.key === "Enter") eKeys.attack = true;
+            });
+            window.addEventListener("keyup", function (e) {
+                if (e.key === "ArrowLeft" || e.key === "a") eKeys.left = false;
+                if (e.key === "ArrowRight" || e.key === "d") eKeys.right = false;
+                if (e.key === "ArrowUp" || e.key === "w" || e.key === " ") { eKeys.up = false; eKeys.jump = false; }
+                if (e.key === "ArrowDown" || e.key === "s") eKeys.down = false;
+                if (e.key === "z" || e.key === "Enter") eKeys.attack = false;
+            });
+        }
+
+        function setTouchKey(key, pressed) {
+            eKeys[key] = pressed;
+        }
+
+        function enginePlayGame() {
+            if (eTab !== "Game") {
+                setEngineTab("Game");
+                return;
+            }
+            if (eGamePaused && eSimState) {
+                eGamePaused = false;
+                eGameLastTick = performance.now();
+                eGameLoop = requestAnimationFrame(stepEngineGame);
+                pushEngineLog("[Runtime] Dilanjutkan.", "text-emerald-400");
+                return;
+            }
+
+            const canvas = document.getElementById("engine-game-canvas");
+            const w = (canvas && canvas.parentElement && canvas.parentElement.clientWidth) || 540;
+            const h = (canvas && canvas.parentElement && canvas.parentElement.clientHeight) || 320;
+
+            const enemies = [];
+            for (let i = 0; i < 4; i++) {
+                enemies.push({
+                    x: 170 + i * ((w - 200) / 4),
+                    y: eData.genre === "platformer" ? h - 62 : 70 + i * 52,
+                    vx: (i % 2 === 0 ? 1 : -1) * (100 + i * 18),
+                    vy: (i % 2 === 0 ? 1 : -1) * 75,
+                    alive: true
+                });
+            }
+
+            const gems = [];
+            for (let g = 0; g < 5; g++) {
+                gems.push({
+                    x: 105 + g * ((w - 150) / 4),
+                    y: eData.genre === "platformer" ? h - 108 - (g % 2) * 48 : 65 + g * 48,
+                    taken: false
+                });
+            }
+
+            eSimState = {
+                score: 0,
+                t: 0,
+                player: { x: 85, y: h * 0.5, vx: 0, vy: 0, grounded: false, dir: 1, cd: 0 },
+                bullets: [],
+                enemies: enemies,
+                gems: gems
+            };
+            updateGameScoreUI();
+            eGameRunning = true;
+            eGamePaused = false;
+            eGameLastTick = performance.now();
+            if (eGameLoop) cancelAnimationFrame(eGameLoop);
+            eGameLoop = requestAnimationFrame(stepEngineGame);
+            pushEngineLog("[Runtime] Game berjalan pada 60 FPS.", "text-emerald-400");
+        }
+
+        function enginePauseGame() {
+            if (!eGameRunning) return;
+            eGamePaused = true;
+            if (eGameLoop) { cancelAnimationFrame(eGameLoop); eGameLoop = null; }
+            pushEngineLog("[Runtime] Dijeda.", "text-amber-300");
+        }
+
+        function engineStopGame(silent) {
+            eGameRunning = false;
+            eGamePaused = false;
+            if (eGameLoop) { cancelAnimationFrame(eGameLoop); eGameLoop = null; }
+            if (!silent) pushEngineLog("[Runtime] Dihentikan.", "text-rose-400");
+        }
+
+        function updateGameScoreUI() {
+            const el = document.getElementById("egame-score");
+            if (el && eSimState) el.textContent = "SKOR: " + eSimState.score;
+        }
+
+        function stepEngineGame(now) {
+            if (!eGameRunning || eGamePaused || !eSimState) return;
+            const dt = Math.min(0.05, (now - eGameLastTick) / 1000);
+            eGameLastTick = now;
+
+            const canvas = document.getElementById("engine-game-canvas");
+            if (!canvas || !canvas.parentElement) return;
+            const w = canvas.parentElement.clientWidth || 540;
+            const h = canvas.parentElement.clientHeight || 320;
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+
+            const r = eData.rules;
+            const p = eSimState.player;
+            eSimState.t += dt;
+
+            const mx = (eKeys.right ? 1 : 0) - (eKeys.left ? 1 : 0);
+            const my = (eKeys.down ? 1 : 0) - (eKeys.up ? 1 : 0);
+            if (mx !== 0) p.dir = mx;
+
+            if (eData.genre === "platformer") {
+                p.vx = mx * r.speed;
+                p.vy += r.gravity * dt;
+                if (eKeys.jump && p.grounded) {
+                    p.vy = -r.jumpForce;
+                    p.grounded = false;
+                }
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                if (p.y >= h - 56) {
+                    p.y = h - 56;
+                    p.vy = 0;
+                    p.grounded = true;
+                }
+            } else {
+                p.x += mx * r.speed * dt;
+                p.y += my * r.speed * dt;
+            }
+            p.x = Math.max(24, Math.min(w - 24, p.x));
+            p.y = Math.max(24, Math.min(h - 24, p.y));
+
+            if (p.cd > 0) p.cd -= dt;
+            if (eKeys.attack && p.cd <= 0) {
+                p.cd = 0.24;
+                eSimState.bullets.push({ x: p.x + p.dir * 20, y: p.y, vx: p.dir * 460, life: 1.2 });
+            }
+
+            eSimState.bullets.forEach(function (b) { b.x += b.vx * dt; b.life -= dt; });
+            eSimState.bullets = eSimState.bullets.filter(function (b) { return b.life > 0 && b.x > 0 && b.x < w; });
+
+            eSimState.enemies.forEach(function (en) {
+                if (!en.alive) return;
+                en.x += en.vx * dt;
+                if (en.x < 28 || en.x > w - 28) en.vx *= -1;
+                if (eData.genre !== "platformer") {
+                    en.y += en.vy * dt;
+                    if (en.y < 28 || en.y > h - 28) en.vy *= -1;
+                }
+                eSimState.bullets.forEach(function (b) {
+                    if (Math.hypot(b.x - en.x, b.y - en.y) < 28) {
+                        en.alive = false;
+                        b.life = 0;
+                        eSimState.score += 100;
+                        updateGameScoreUI();
+                    }
+                });
+            });
+
+            if (eSimState.enemies.every(function (en) { return !en.alive; })) {
+                eSimState.enemies.forEach(function (en, i) {
+                    en.alive = true;
+                    en.x = 135 + (i * 85) % (w - 150);
+                });
+            }
+
+            eSimState.gems.forEach(function (gm) {
+                if (!gm.taken && Math.hypot(p.x - gm.x, p.y - gm.y) < 32) {
+                    gm.taken = true;
+                    eSimState.score += 50;
+                    updateGameScoreUI();
+                }
+            });
+            if (eSimState.gems.every(function (gm) { return gm.taken; })) {
+                eSimState.gems.forEach(function (gm) { gm.taken = false; });
+            }
+
+            const bg = ctx.createLinearGradient(0, 0, 0, h);
+            bg.addColorStop(0, r.bgTop);
+            bg.addColorStop(1, r.bgBottom);
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, w, h);
+
+            if (eData.genre === "platformer") {
+                ctx.fillStyle = "#1e293b";
+                ctx.fillRect(0, h - 38, w, 38);
+                ctx.fillStyle = "#478cbf";
+                ctx.fillRect(0, h - 40, w, 4);
+            }
+
+            eSimState.gems.forEach(function (gm) {
+                if (gm.taken) return;
+                ctx.fillStyle = r.accentColor;
+                ctx.beginPath();
+                ctx.arc(gm.x, gm.y + Math.sin(eSimState.t * 4 + gm.x) * 4, 8, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            ctx.fillStyle = "#38bdf8";
+            eSimState.bullets.forEach(function (b) { ctx.fillRect(b.x - 10, b.y - 3, 20, 6); });
+
+            const eAsset = r.enemyTex && eData.assets[r.enemyTex];
+            eSimState.enemies.forEach(function (en) {
+                if (!en.alive) return;
+                if (eAsset && eAsset.img) {
+                    ctx.drawImage(eAsset.img, en.x - 18, en.y - 18, 36, 36);
+                } else {
+                    ctx.fillStyle = r.enemyColor;
+                    ctx.fillRect(en.x - 16, en.y - 16, 32, 32);
+                }
+            });
+
+            const pAsset = r.playerTex && eData.assets[r.playerTex];
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            if (p.dir < 0) ctx.scale(-1, 1);
+            if (pAsset && pAsset.img) {
+                ctx.drawImage(pAsset.img, -20, -20, 40, 40);
+            } else {
+                ctx.fillStyle = r.playerColor;
+                ctx.fillRect(-18, -18, 36, 36);
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(4, -8, 10, 5);
+            }
+            ctx.restore();
+
+            eGameLoop = requestAnimationFrame(stepEngineGame);
+        }
+
+        function engineExportScriptBundle() {
+            const parts = Object.keys(eData.scripts).map(function (lang) {
+                return "// === " + lang + " ===\n" + eData.scripts[lang];
+            });
+            const blob = new Blob([parts.join("\n\n")], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Naomi-Engine5-Paket-Script.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+            showToast("Paket semua script diunduh!");
+        }
+
+        function engineExportHtml5Game() {
+            const cfgStr = JSON.stringify(eData.rules);
+            const htmlParts = [
+                "<!DOCTYPE html>",
+                "<html lang=\"id\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\">",
+                "<title>" + escapeHtml(eData.title) + " — Naomi Engine 5</title>",
+                "<style>body{margin:0;background:#090c10;color:#fff;font-family:sans-serif;overflow:hidden;display:flex;flex-direction:column;height:100vh}canvas{flex:1;width:100%;display:block}.bar{padding:10px 14px;background:#14181d;font-weight:bold;display:flex;justify-content:space-between}</style>",
+                "</head><body><div class=\"bar\"><span>" + escapeHtml(eData.title) + "</span><span>Naomi Engine 5</span></div><canvas id=\"g\"></canvas>",
+                "<script>",
+                "const cfg=" + cfgStr + ";const c=document.getElementById('g'),ctx=c.getContext('2d');let px=120,py=200,vy=0,k={};",
+                "window.onkeydown=e=>k[e.key]=true;window.onkeyup=e=>k[e.key]=false;",
+                "function frame(){c.width=c.clientWidth;c.height=c.clientHeight;if(k['ArrowLeft']||k['a'])px-=5;if(k['ArrowRight']||k['d'])px+=5;vy+=0.6;py+=vy;if(py>c.height-60){py=c.height-60;vy=0;if(k[' ']||k['ArrowUp']||k['w'])vy=-13;}ctx.fillStyle=cfg.bgTop;ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#478cbf';ctx.fillRect(0,c.height-40,c.width,4);ctx.fillStyle=cfg.playerColor;ctx.fillRect(px-18,py-18,36,36);requestAnimationFrame(frame);}frame();",
+                "<\/script></body></html>"
+            ];
+            const blob = new Blob([htmlParts.join("\n")], { type: "text/html;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Naomi-Engine5-Game.html";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+            showToast("Game HTML5 siap main diunduh!");
+        }
+
+        // =========================================================================
+        // UTILITAS UMUM (CLIPBOARD, TOAST, ESCAPE HTML)
+        // =========================================================================
+        function copyCodeById(elId, btn) {
+            const el = document.getElementById(elId);
+            if (el) copyRawText(el.textContent, btn, "Salin Kode");
+        }
+
+        function copyFromTextarea(taId, btn) {
+            const ta = document.getElementById(taId);
+            if (ta) copyRawText(ta.value, btn, "Salin Balasan");
+        }
+
+        function copyRawText(text, btn, defaultLabel) {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand("copy");
+                if (btn) btn.textContent = "Tersalin!";
+                showToast("Teks berhasil disalin!");
+                setTimeout(function () { if (btn) btn.textContent = defaultLabel; }, 1800);
+            } catch (e) {
+                showToast("Gagal menyalin teks.", "error");
+            } finally {
+                document.body.removeChild(ta);
+            }
+        }
+
+        function removeElementById(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function shortClock() {
+            return new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+        }
+
+        function escapeHtml(str) {
+            return String(str || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function showToast(msg, type) {
+            const area = document.getElementById("toast-area");
+            if (!area) return;
+            const toast = document.createElement("div");
+            const border = type === "error" ? "border-rose-500/50 text-rose-200" : "border-violet-500/45 text-slate-100";
+            toast.className = "pointer-events-auto px-3.5 py-2 rounded-2xl bg-slate-900/95 border " + border + " shadow-2xl text-xs font-semibold animate-fade-up";
+            toast.textContent = msg;
+            area.appendChild(toast);
+            setTimeout(function () {
+                toast.style.opacity = "0";
+                toast.style.transition = "opacity 0.25s";
+                setTimeout(function () { toast.remove(); }, 250);
+            }, 2200);
+        }
+    </script>
+</body>
+</html>
